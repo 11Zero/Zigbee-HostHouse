@@ -123,7 +123,7 @@ afAddrType_t SampleApp_P2P_DstAddr;      //点播
 //增加变量START
 afAddrType_t SampleApp_Periodic_DstAddr;  //广播
 aps_Group_t SampleApp_Group;
-uint8 DevicesIEEEAddr[4][17]={{"00124B0006F7E953"},{"00124B0006F78A1F"},{"00124B0006F7EAFD"},{"00124B001FBE1D86"}};
+uint8 DevicesIEEEAddr[4][17]={"00124B0006F7E953","00124B0006F78A1F","00124B0006F7EAFD","00124B001FBE1D86"};
 uint16 DevicesShortAddr[4]={-1,-1,-1,-1};
 int devicesOnline[4]={0,0,0,0};//设备在线状态实时码，跟随终端心跳刷新
 int devicesOnlineStatus[4]={0,0,0,0};//设备在线状态码，跟随协调器定时任务刷新
@@ -194,9 +194,9 @@ void SampleApp_Init( uint8 task_id )
   
   //初始化发布的主题
   //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
-  sprintf(topics_post, "/a1sIpEvOQhQ/device/user/transfer");
+  sprintf(topics_post, "/a1xaMw4YerO/device/user/transfer");
   //初始化订阅的主题
-  sprintf(topics_buff, "/a1sIpEvOQhQ/device/user/receive");
+  sprintf(topics_buff, "/a1xaMw4YerO/device/user/receive");
   g_mqtt_topics_set[0]=topics_buff;
 #else
   
@@ -488,7 +488,7 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
     {
       devicesOnlineStatus[i] = devicesOnline[i];
       devicesOnline[i]=0;
-      sprintf(buff,"device%d %d",i,devicesOnlineStatus[i]);
+      printf("device%d %d\n",i,devicesOnlineStatus[i]);
       //HalLcdWriteString(buff, i+1);
     }
     
@@ -652,19 +652,47 @@ void SampleApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
           if(NULL!=strstr(data,"switch1,1"))//判断消息设置开关switch1命令为开
           {
             P0_5 = 1;
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
           {
             P0_5 = 0;
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
           }
           else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
           {
             P0_7 = 1;
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
           {
             P0_7 = 0;
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
+          
+          else if(NULL!=strstr(data,"switch1,ck"))//判断消息查询开关switch1命令
+          {
+            data[strlen(data)-2]='\0';
+            sprintf(data,"%s%d",data,P0_5);
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+          }
+          else if(NULL!=strstr(data,"switch2,ck"))//判断消息查询开关switch2命令
+          {
+            data[strlen(data)-2]='\0';
+            sprintf(data,"%s%d",data,P0_7);
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+          }
+        }break;
+      case 1005://协调器收到终端向反馈的查询结果  data = "dev2,switch1,0",立即发送给服务器
+        {
+          //todo
+          //查询结果消息为{"msg":"dev2,switch1,0","flow":201}
+          #ifdef ZDO_COORDINATOR
+          if(onenet_login_ok==2)
+          {
+            Response2mqtt(data);
+          }
+          #endif
         }break;
       }
 #ifdef ZDO_COORDINATOR

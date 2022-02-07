@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR C/C++ Compiler V8.10.3.10338/W32 for 8051         23/Jan/2022  23:34:56 #
+# IAR C/C++ Compiler V8.10.3.10338/W32 for 8051         07/Feb/2022  22:59:52 #
 # Copyright 2004-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Core               =  plain                                              #
@@ -318,7 +318,7 @@ e:\imtht\Documents\Code\Zigbee\ZStack-2.5.1a\Projects\zstack\Samples\SampleApp\S
    \   000012                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-    126          uint8 DevicesIEEEAddr[4][17]={{"00124B0006F7E953"},{"00124B0006F78A1F"},{"00124B0006F7EAFD"},{"00124B001FBE1D86"}};
+    126          uint8 DevicesIEEEAddr[4][17]={"00124B0006F7E953","00124B0006F78A1F","00124B0006F7EAFD","00124B001FBE1D86"};
    \                     DevicesIEEEAddr:
    \   000000                DS 68
    \   000044                REQUIRE `?<Initializer for DevicesIEEEAddr>`
@@ -477,7 +477,7 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   000025   F9           MOV     R1,A
    \   000026   12....       LCALL   ??RegisterForKeys?relay
     185            //逢蜂鸣器初始化
-    186          
+    186            
     187            
     188          #ifdef ZDO_COORDINATOR
     189            //协调器初始化
@@ -487,13 +487,13 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
     193            //P0_5=1;
     194            
     195            //初始化发布的主题
-    196          //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
-    197            sprintf(topics_post, "/a1sIpEvOQhQ/device/user/transfer");
+    196            //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
+    197            sprintf(topics_post, "/a1xaMw4YerO/device/user/transfer");
     198            //初始化订阅的主题
-    199            sprintf(topics_buff, "/a1sIpEvOQhQ/device/user/receive");
+    199            sprintf(topics_buff, "/a1xaMw4YerO/device/user/receive");
     200            g_mqtt_topics_set[0]=topics_buff;
     201          #else
-    202              
+    202            
     203            P0SEL &= ~0xa0;                 //设置P05和P07为普通IO口
    \   000029   53F35F       ANL     0xf3,#0x5f
     204            P0DIR |= 0xa0;                 //P05和P07定义为输出口
@@ -593,8 +593,8 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   0000A6   FD           MOV     R5,A
    \   0000A7   7A..         MOV     R2,#MacAddr & 0xff
    \   0000A9   7B..         MOV     R3,#(MacAddr >> 8) & 0xff
-   \   0000AB   12....       LCALL   ??Subroutine10_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_21:
+   \   0000AB   12....       LCALL   ??Subroutine12_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_28:
    \   0000AE   12....       LCALL   ?DEALLOC_XSTACK8
     228            
     229          }
@@ -604,7 +604,7 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   0000B6                REQUIRE P0DIR
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine10_0:
+   \                     ??Subroutine12_0:
    \   000000   12....       LCALL   ??memcpy?relay
    \   000003   7402         MOV     A,#0x2
    \   000005   22           RET
@@ -627,20 +627,20 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
     237            if ( keys & HAL_KEY_SW_6 )//key1
     238            {
     239              SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1002,"1002 msg",16);
-    240          //    const signed char *g_mqtt_topics[] = {"mqtt_topic_test1"};
-    241          //    if(0 == mqtt_subscribe_topic(g_mqtt_topics, 1))
-    242          //    {
-    243          //      
-    244          //    }
+    240              //    const signed char *g_mqtt_topics[] = {"mqtt_topic_test1"};
+    241              //    if(0 == mqtt_subscribe_topic(g_mqtt_topics, 1))
+    242              //    {
+    243              //      
+    244              //    }
     245            }
     246            
     247            if ( keys & HAL_KEY_SW_1 )//key2
     248            {
     249              SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,"1004 msg",70);
-    250          //    if(0==SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,MqttRecMsg,strlen(MqttRecMsg)))
-    251          //    {
-    252          //      memset(MqttRecMsg,0,sizeof(MqttRecMsg));
-    253          //    }
+    250              //    if(0==SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,MqttRecMsg,strlen(MqttRecMsg)))
+    251              //    {
+    252              //      memset(MqttRecMsg,0,sizeof(MqttRecMsg));
+    253              //    }
     254              if(onenet_login_ok==2)
     255              {
     256                //发送温湿度数据到onenet
@@ -676,11 +676,11 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   000019   75....       MOV     ?V0 + 1,#(`?<Constant "1001 msg">` >> 8) & 0xff
    \   00001C   78..         MOV     R0,#?V0 + 0
    \   00001E   12....       LCALL   ?PUSH_XSTACK_I_TWO
-   \   000021   12....       LCALL   ?Subroutine4 & 0xFFFF
+   \   000021   12....       LCALL   ?Subroutine3 & 0xFFFF
     278              //P0_5 = 1;
     279              //HalLcdWriteString("P0_5 = 1", HAL_LCD_LINE_3);
     280            }
-   \                     ??CrossCallReturnLabel_14:
+   \                     ??CrossCallReturnLabel_20:
    \   000024   12....       LCALL   ?DEALLOC_XSTACK8
     281            
     282            if ( keys & HAL_KEY_SW_1 )//key2
@@ -701,11 +701,11 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   00003D   78..         MOV     R0,#?V0 + 0
    \   00003F   12....       LCALL   ?PUSH_XSTACK_I_TWO
    \   000042   7C02         MOV     R4,#0x2
-   \   000044   12....       LCALL   ??Subroutine9_0 & 0xFFFF
+   \   000044   12....       LCALL   ??Subroutine11_0 & 0xFFFF
     286              //P0_5 = 0;
     287              //HalLcdWriteString("P0_5 = 0", HAL_LCD_LINE_3);
     288            }
-   \                     ??CrossCallReturnLabel_16:
+   \                     ??CrossCallReturnLabel_22:
    \   000047   12....       LCALL   ?DEALLOC_XSTACK8
     289            
     290          #endif
@@ -715,13 +715,13 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
    \   00004C   02....       LJMP    ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine4:
+   \                     ?Subroutine3:
    \   000000   7C01         MOV     R4,#0x1
-   \   000002                REQUIRE ??Subroutine9_0
-   \   000002                ; // Fall through to label ??Subroutine9_0
+   \   000002                REQUIRE ??Subroutine11_0
+   \   000002                ; // Fall through to label ??Subroutine11_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine9_0:
+   \                     ??Subroutine11_0:
    \   000000   7D10         MOV     R5,#0x10
    \   000002   7A00         MOV     R2,#0x0
    \   000004   7B00         MOV     R3,#0x0
@@ -779,12 +779,12 @@ Warning[Pe223]: function "MT_UartRegisterTaskID" declared implicitly
     325                  {
     326                    
     327                    /////////////////////////////////////
-    328                  #ifdef ZDO_COORDINATOR
+    328          #ifdef ZDO_COORDINATOR
     329                    SampleApp_NwkState = (zdoStatus_t)(MSGpkt->hdr.status);
-    330                  #else
+    330          #else
     331                    SampleApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
-    332                  #endif
-    333                   ////////////////////////////////////////// 
+    332          #endif
+    333                    ////////////////////////////////////////// 
     334                    if ( (SampleApp_NwkState == DEV_ROUTER) || (SampleApp_NwkState == DEV_END_DEVICE) )
     335                    {
     336                      // Start sending the periodic message in a regular interval.
@@ -809,21 +809,21 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
     352                    osal_start_timerEx( SampleApp_TaskID,
     353                                       SAMPLEAPP_SEND_PERIODIC_MSG_EVT,
     354                                       SAMPLEAPP_SEND_PERIODIC_MSG_TIMEOUT );
-    355                ///////////////////////////////////////////    
-    356                  #ifdef ZDO_COORDINATOR
+    355                    ///////////////////////////////////////////    
+    356          #ifdef ZDO_COORDINATOR
     357                    if(!flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT)
     358                    {          
     359                      osal_start_timerEx( SampleApp_TaskID,SAMPLEAPP_COOR_CHECK_DEV_EVT,1000);    //2后检测设备在线状态 
     360                      flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT = true;
     361                    }
-    362                  #else
+    362          #else
     363                    if(!flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT)
     364                    {  
     365                      osal_start_timerEx( SampleApp_TaskID,SAMPLEAPP_ENDDEV_HEART_BEAT_EVT,2000);    //2s后发送一次心跳包到协调器 
     366                      flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT = true;
     367                    }
-    368                  #endif
-    369                 //////////////////////////////////////   
+    368          #endif
+    369                    //////////////////////////////////////   
     370                    //        }
     371                    //        else if(SampleApp_NwkState == DEV_ZB_COORD)
     372                    //        {
@@ -914,10 +914,10 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
     457                //    OneNet_SendData(end_temp, end_hum);
     458                
     459                sprintf(mqtt_message,"{\"flow\":201,\
-    460                    \"msg\":{\
-    461                          \"dev1\":%d,\
-    462                            \"dev2\":%d,\
-    463                              \"dev3\":%d,\
+    460                  \"msg\":{\
+    461                    \"dev1\":%d,\
+    462                      \"dev2\":%d,\
+    463                        \"dev3\":%d,\
     464              }}",
     465              devicesOnlineStatus[0],
     466              devicesOnlineStatus[1],
@@ -952,42 +952,42 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
     495              osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_DEV_EVT,5000 );
     496              return (events ^ SAMPLEAPP_COOR_CHECK_DEV_EVT);
     497            }
-    498          
+    498            
     499            if ( events & SAMPLEAPP_COOR_CHECK_MQTT_EVT )//协调器执行mqtt处理事件
     500            {
-    501                uint8 pureRecMsg[50] = {0};
-    502                if(MqttRecMsg[0]=='\0')//假如数据字符为dev1,switch2,1
-    503                {}
-    504                //else if(strstr(MqttRecMsg,"dev2,")!=NULL)
-    505                else{
-    506                     printf("MqttRecMsg:%s\n",MqttRecMsg);
-    507                     if(strstr(MqttRecMsg,"\"}")!=NULL)
-    508                     {
-    509                       memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\"}")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
-    510                     }else if(strstr(MqttRecMsg,"\",\"flow\"")!=NULL)
-    511                     {
-    512                       memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\",\"flow\"")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
-    513                     }
-    514                   }
-    515                if(strstr(pureRecMsg,"dev0,")!=NULL)
-    516                {
-    517                  SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-    518                  printf("dev0,");
-    519                }else if(strstr(pureRecMsg,"dev1,")!=NULL)
-    520                {
-    521                  SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-    522                  printf("dev1,");
-    523                }else if(strstr(pureRecMsg,"dev2,")!=NULL)
-    524                {
-    525                  SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-    526                  printf("dev2,");
-    527                }else if(strstr(pureRecMsg,"dev3,")!=NULL)
-    528                {
-    529                  SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-    530                  printf("dev3,");
-    531                }
-    532                osal_memset(MqttRecMsg, 0, 200);
-    533          
+    501              uint8 pureRecMsg[50] = {0};
+    502              if(MqttRecMsg[0]=='\0')//假如数据字符为dev1,switch2,1
+    503              {}
+    504              //else if(strstr(MqttRecMsg,"dev2,")!=NULL)
+    505              else{
+    506                printf("MqttRecMsg:%s\n",MqttRecMsg);
+    507                if(strstr(MqttRecMsg,"\"}")!=NULL)
+    508                {
+    509                  memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\"}")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
+    510                }else if(strstr(MqttRecMsg,"\",\"flow\"")!=NULL)
+    511                {
+    512                  memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\",\"flow\"")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
+    513                }
+    514              }
+    515              if(DevicesShortAddr[0]!=-1 && strstr(pureRecMsg,"dev0,")!=NULL)
+    516              {
+    517                SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+    518                printf("dev0,");
+    519              }else if(DevicesShortAddr[1]!=-1 && strstr(pureRecMsg,"dev1,")!=NULL)
+    520              {
+    521                SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+    522                printf("dev1,");
+    523              }else if(DevicesShortAddr[2]!=-1 && strstr(pureRecMsg,"dev2,")!=NULL)
+    524              {
+    525                SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+    526                printf("dev2,");
+    527              }else if(DevicesShortAddr[3]!=-1 && strstr(pureRecMsg,"dev3,")!=NULL)
+    528              {
+    529                SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+    530                printf("dev3,");
+    531              }
+    532              osal_memset(MqttRecMsg, 0, 200);
+    533              
     534              return (events ^ SAMPLEAPP_COOR_CHECK_MQTT_EVT);
     535            }  
     536          #else
@@ -1016,11 +1016,11 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000022   340B         ADDC    A,#0xb
    \   000024   FD           MOV     R5,A
    \   000025   7A01         MOV     R2,#0x1
-   \   000027   12....       LCALL   ?Subroutine8 & 0xFFFF
+   \   000027   12....       LCALL   ?Subroutine10 & 0xFFFF
     548              
     549              // return unprocessed events
     550              return (events ^ SAMPLEAPP_SEND_PERIODIC_MSG_EVT);
-   \                     ??CrossCallReturnLabel_11:
+   \                     ??CrossCallReturnLabel_17:
    \   00002A   EE           MOV     A,R6
    \   00002B   6401         XRL     A,#0x1
    \   00002D   FA           MOV     R2,A
@@ -1147,8 +1147,8 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   0000F4   78..         MOV     R0,#?V0 + 2
    \   0000F6   12....       LCALL   ?PUSH_XSTACK_I_TWO
    \   0000F9   7C03         MOV     R4,#0x3
-   \   0000FB   12....       LCALL   ??Subroutine9_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_17:
+   \   0000FB   12....       LCALL   ??Subroutine11_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_23:
    \   0000FE   12....       LCALL   ?DEALLOC_XSTACK8
    \   000101   02....       LJMP    ??SampleApp_ProcessEvent_5 & 0xFFFF
    \                     ??SampleApp_ProcessEvent_7:
@@ -1173,19 +1173,19 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   00011C   F5..         MOV     ?V0 + 0,A
    \   00011E   78..         MOV     R0,#?V0 + 0
    \   000120   12....       LCALL   ?PUSH_XSTACK_I_TWO
-   \   000123   12....       LCALL   ?Subroutine4 & 0xFFFF
-   \                     ??CrossCallReturnLabel_15:
+   \   000123   12....       LCALL   ?Subroutine3 & 0xFFFF
+   \                     ??CrossCallReturnLabel_21:
    \   000126   12....       LCALL   ?DEALLOC_XSTACK8
     556              osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_ENDDEV_HEART_BEAT_EVT,2000 );
    \   000129                ; Setup parameters for call to function osal_start_timerEx
    \   000129   7CD0         MOV     R4,#-0x30
    \   00012B   7D07         MOV     R5,#0x7
    \   00012D   7A08         MOV     R2,#0x8
-   \   00012F   12....       LCALL   ?Subroutine8 & 0xFFFF
+   \   00012F   12....       LCALL   ?Subroutine10 & 0xFFFF
     557              
     558              // return unprocessed events
     559              return (events ^ SAMPLEAPP_ENDDEV_HEART_BEAT_EVT);
-   \                     ??CrossCallReturnLabel_12:
+   \                     ??CrossCallReturnLabel_18:
    \   000132   EE           MOV     A,R6
    \   000133   6408         XRL     A,#0x8
    \   000135   FA           MOV     R2,A
@@ -1214,13 +1214,13 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine5:
-   \   000000   12....       LCALL   ?Subroutine8 & 0xFFFF
-   \                     ??CrossCallReturnLabel_13:
+   \   000000   12....       LCALL   ?Subroutine10 & 0xFFFF
+   \                     ??CrossCallReturnLabel_19:
    \   000003   90....       MOV     DPTR,#flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT
    \   000006   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine8:
+   \                     ?Subroutine10:
    \   000000   7B00         MOV     R3,#0x0
    \   000002   90....       MOV     DPTR,#SampleApp_TaskID
    \   000005   E0           MOVX    A,@DPTR
@@ -1324,8 +1324,8 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000067   FD           MOV     R5,A
    \   000068   7406         MOV     A,#0x6
    \   00006A   12....       LCALL   ?XSTACK_DISP0_8
-   \   00006D   12....       LCALL   ?Subroutine3 & 0xFFFF
-   \                     ??CrossCallReturnLabel_18:
+   \   00006D   12....       LCALL   ?Subroutine4 & 0xFFFF
+   \                     ??CrossCallReturnLabel_25:
    \   000070   12....       LCALL   ?DEALLOC_XSTACK8
     596                data[4]='\0';
    \   000073   7408         MOV     A,#0x8
@@ -1368,8 +1368,8 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   0000BE   FD           MOV     R5,A
    \   0000BF   7406         MOV     A,#0x6
    \   0000C1   12....       LCALL   ?XSTACK_DISP0_8
-   \   0000C4   12....       LCALL   ?Subroutine3 & 0xFFFF
-   \                     ??CrossCallReturnLabel_19:
+   \   0000C4   12....       LCALL   ?Subroutine4 & 0xFFFF
+   \                     ??CrossCallReturnLabel_26:
    \   0000C7   12....       LCALL   ?DEALLOC_XSTACK8
     599                data[4]='\0';
    \   0000CA   7408         MOV     A,#0x8
@@ -1415,8 +1415,8 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000117   FD           MOV     R5,A
    \   000118   7406         MOV     A,#0x6
    \   00011A   12....       LCALL   ?XSTACK_DISP0_8
-   \   00011D   12....       LCALL   ?Subroutine3 & 0xFFFF
-   \                     ??CrossCallReturnLabel_20:
+   \   00011D   12....       LCALL   ?Subroutine4 & 0xFFFF
+   \                     ??CrossCallReturnLabel_27:
    \   000120   12....       LCALL   ?DEALLOC_XSTACK8
     602                data[dataLens-8]='\0';
    \   000123   85..82       MOV     DPL,?XSP + 0
@@ -1442,7 +1442,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000143   F583         MOV     DPH,A
    \   000145   E4           CLR     A
    \   000146   F0           MOVX    @DPTR,A
-    603          
+    603                
     604                
     605                //sprintf(buff, "%s", pkt->cmd.Data);
     606                HalLcdWriteString(data, HAL_LCD_LINE_4); //LCD显示
@@ -1530,7 +1530,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   0001C9   8B..         MOV     ?V0 + 3,R3
    \   0001CB   EA           MOV     A,R2
    \   0001CC   45..         ORL     A,?V0 + 3
-   \   0001CE   7050         JNZ     ??SampleApp_ProcessMSGCmd_6
+   \   0001CE   7044         JNZ     ??SampleApp_ProcessMSGCmd_6
     617                      {
     618                        DevicesShortAddr[i]=pkt->srcAddr.addr.shortAddr;
    \   0001D0   8E82         MOV     DPL,R6
@@ -1578,126 +1578,121 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   00020C   7402         MOV     A,#0x2
    \   00020E   12....       LCALL   ?DEALLOC_XSTACK8
     620                        //HalLcdWriteString((char*)tmpData,i+1);
-    621                        SampleApp_getIEEEAddr(data);
-   \   000211                ; Setup parameters for call to function SampleApp_getIEEEAddr
-   \   000211   7404         MOV     A,#0x4
-   \   000213   12....       LCALL   ?XSTACK_DISP0_8
-   \   000216   AA82         MOV     R2,DPL
-   \   000218   AB83         MOV     R3,DPH
-   \   00021A   12....       LCALL   ??SampleApp_getIEEEAddr?relay
+    621                        //SampleApp_getIEEEAddr(data);
     622                        //              SampleApp_SendPointToPointMessage(DevicesShortAddr[i],0x1004,tmpData,16);
     623          #ifdef ZDO_COORDINATOR
     624                        if(onenet_login_ok==2)
     625                        {
     626                          sprintf(mqtt_message, "{\"flow\":201,\"msg\":\"%s Linked\"}",DevicesIEEEAddr[i]);
-    627                        OneNet_publish_topic(topics_post, mqtt_message);
+    627                          OneNet_publish_topic(topics_post, mqtt_message);
     628                        }
     629          #endif
     630                        break;
-   \   00021D   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
+   \   000211   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
     631                      }
     632                    }
    \                     ??SampleApp_ProcessMSGCmd_6:
-   \   000220   E5..         MOV     A,?V0 + 0
-   \   000222   2401         ADD     A,#0x1
-   \   000224   F5..         MOV     ?V0 + 0,A
-   \   000226   E5..         MOV     A,?V0 + 1
-   \   000228   3400         ADDC    A,#0x0
-   \   00022A   F5..         MOV     ?V0 + 1,A
-   \   00022C   C3           CLR     C
-   \   00022D   E5..         MOV     A,?V0 + 0
-   \   00022F   9404         SUBB    A,#0x4
-   \   000231   E5..         MOV     A,?V0 + 1
-   \   000233   9400         SUBB    A,#0x0
-   \   000235   4003         JC      $+5
-   \   000237   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
-   \   00023A   02....       LJMP    ??SampleApp_ProcessMSGCmd_5 & 0xFFFF
+   \   000214   E5..         MOV     A,?V0 + 0
+   \   000216   2401         ADD     A,#0x1
+   \   000218   F5..         MOV     ?V0 + 0,A
+   \   00021A   E5..         MOV     A,?V0 + 1
+   \   00021C   3400         ADDC    A,#0x0
+   \   00021E   F5..         MOV     ?V0 + 1,A
+   \   000220   C3           CLR     C
+   \   000221   E5..         MOV     A,?V0 + 0
+   \   000223   9404         SUBB    A,#0x4
+   \   000225   E5..         MOV     A,?V0 + 1
+   \   000227   9400         SUBB    A,#0x0
+   \   000229   4003         JC      $+5
+   \   00022B   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
+   \   00022E   02....       LJMP    ??SampleApp_ProcessMSGCmd_5 & 0xFFFF
     633                  }break;
     634                case 1001://心跳包数据事件
     635                  {
     636                    for(int i=0;i<sizeof(devicesOnline)/sizeof(devicesOnline[0]);i++)
    \                     ??SampleApp_ProcessMSGCmd_2:
-   \   00023D   7800         MOV     R0,#0x0
-   \   00023F   7900         MOV     R1,#0x0
+   \   000231   7800         MOV     R0,#0x0
+   \   000233   7900         MOV     R1,#0x0
     637                    {
     638                      if(pkt->srcAddr.addr.shortAddr == DevicesShortAddr[i])
    \                     ??SampleApp_ProcessMSGCmd_7:
-   \   000241   8E82         MOV     DPL,R6
-   \   000243   8F83         MOV     DPH,R7
-   \   000245   A3           INC     DPTR
-   \   000246   A3           INC     DPTR
-   \   000247   A3           INC     DPTR
-   \   000248   A3           INC     DPTR
-   \   000249   A3           INC     DPTR
-   \   00024A   A3           INC     DPTR
-   \   00024B   E0           MOVX    A,@DPTR
-   \   00024C   FC           MOV     R4,A
-   \   00024D   A3           INC     DPTR
-   \   00024E   E0           MOVX    A,@DPTR
-   \   00024F   FD           MOV     R5,A
-   \   000250   E8           MOV     A,R0
-   \   000251   FA           MOV     R2,A
-   \   000252   E9           MOV     A,R1
-   \   000253   FB           MOV     R3,A
-   \   000254   EA           MOV     A,R2
-   \   000255   C3           CLR     C
-   \   000256   33           RLC     A
-   \   000257   FA           MOV     R2,A
-   \   000258   EB           MOV     A,R3
-   \   000259   33           RLC     A
-   \   00025A   FB           MOV     R3,A
-   \   00025B   74..         MOV     A,#DevicesShortAddr & 0xff
-   \   00025D   2A           ADD     A,R2
-   \   00025E   F582         MOV     DPL,A
-   \   000260   74..         MOV     A,#(DevicesShortAddr >> 8) & 0xff
-   \   000262   3B           ADDC    A,R3
-   \   000263   F583         MOV     DPH,A
-   \   000265   E0           MOVX    A,@DPTR
-   \   000266   6C           XRL     A,R4
-   \   000267   7003         JNZ     ??SampleApp_ProcessMSGCmd_8
-   \   000269   A3           INC     DPTR
-   \   00026A   E0           MOVX    A,@DPTR
-   \   00026B   6D           XRL     A,R5
+   \   000235   8E82         MOV     DPL,R6
+   \   000237   8F83         MOV     DPH,R7
+   \   000239   A3           INC     DPTR
+   \   00023A   A3           INC     DPTR
+   \   00023B   A3           INC     DPTR
+   \   00023C   A3           INC     DPTR
+   \   00023D   A3           INC     DPTR
+   \   00023E   A3           INC     DPTR
+   \   00023F   E0           MOVX    A,@DPTR
+   \   000240   FC           MOV     R4,A
+   \   000241   A3           INC     DPTR
+   \   000242   E0           MOVX    A,@DPTR
+   \   000243   FD           MOV     R5,A
+   \   000244   E8           MOV     A,R0
+   \   000245   FA           MOV     R2,A
+   \   000246   E9           MOV     A,R1
+   \   000247   FB           MOV     R3,A
+   \   000248   EA           MOV     A,R2
+   \   000249   C3           CLR     C
+   \   00024A   33           RLC     A
+   \   00024B   FA           MOV     R2,A
+   \   00024C   EB           MOV     A,R3
+   \   00024D   33           RLC     A
+   \   00024E   FB           MOV     R3,A
+   \   00024F   74..         MOV     A,#DevicesShortAddr & 0xff
+   \   000251   2A           ADD     A,R2
+   \   000252   F582         MOV     DPL,A
+   \   000254   74..         MOV     A,#(DevicesShortAddr >> 8) & 0xff
+   \   000256   3B           ADDC    A,R3
+   \   000257   F583         MOV     DPH,A
+   \   000259   E0           MOVX    A,@DPTR
+   \   00025A   6C           XRL     A,R4
+   \   00025B   7003         JNZ     ??SampleApp_ProcessMSGCmd_8
+   \   00025D   A3           INC     DPTR
+   \   00025E   E0           MOVX    A,@DPTR
+   \   00025F   6D           XRL     A,R5
    \                     ??SampleApp_ProcessMSGCmd_8:
-   \   00026C   7019         JNZ     ??SampleApp_ProcessMSGCmd_9
+   \   000260   701A         JNZ     ??SampleApp_ProcessMSGCmd_9
     639                      {
     640                        devicesOnline[i]=1;//发现心跳终端来信，即设置对应在线状态为在线
-   \   00026E   E8           MOV     A,R0
-   \   00026F   C3           CLR     C
-   \   000270   33           RLC     A
-   \   000271   F8           MOV     R0,A
-   \   000272   E9           MOV     A,R1
-   \   000273   33           RLC     A
-   \   000274   F9           MOV     R1,A
-   \   000275   74..         MOV     A,#devicesOnline & 0xff
-   \   000277   28           ADD     A,R0
-   \   000278   F582         MOV     DPL,A
-   \   00027A   74..         MOV     A,#(devicesOnline >> 8) & 0xff
-   \   00027C   39           ADDC    A,R1
-   \   00027D   F583         MOV     DPH,A
-   \   00027F   7401         MOV     A,#0x1
-   \   000281   F0           MOVX    @DPTR,A
-   \   000282   A3           INC     DPTR
-   \   000283   E4           CLR     A
-   \   000284   F0           MOVX    @DPTR,A
+   \   000262   E8           MOV     A,R0
+   \   000263   C3           CLR     C
+   \   000264   33           RLC     A
+   \   000265   F8           MOV     R0,A
+   \   000266   E9           MOV     A,R1
+   \   000267   33           RLC     A
+   \   000268   F9           MOV     R1,A
+   \   000269   74..         MOV     A,#devicesOnline & 0xff
+   \   00026B   28           ADD     A,R0
+   \   00026C   F582         MOV     DPL,A
+   \   00026E   74..         MOV     A,#(devicesOnline >> 8) & 0xff
+   \   000270   39           ADDC    A,R1
+   \   000271   F583         MOV     DPH,A
+   \   000273   7401         MOV     A,#0x1
+   \   000275   F0           MOVX    @DPTR,A
+   \   000276   A3           INC     DPTR
+   \   000277   E4           CLR     A
+   \   000278   F0           MOVX    @DPTR,A
     641                        break;
-   \   000285   8059         SJMP    ??SampleApp_ProcessMSGCmd_1
+   \   000279   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
     642                      }
     643                    }
    \                     ??SampleApp_ProcessMSGCmd_9:
-   \   000287   E8           MOV     A,R0
-   \   000288   2401         ADD     A,#0x1
-   \   00028A   08           INC     R0
-   \   00028B   E9           MOV     A,R1
-   \   00028C   3400         ADDC    A,#0x0
-   \   00028E   F9           MOV     R1,A
-   \   00028F   C3           CLR     C
-   \   000290   E8           MOV     A,R0
-   \   000291   9404         SUBB    A,#0x4
-   \   000293   E9           MOV     A,R1
-   \   000294   9400         SUBB    A,#0x0
-   \   000296   5048         JNC     ??SampleApp_ProcessMSGCmd_1
-   \   000298   80A7         SJMP    ??SampleApp_ProcessMSGCmd_7
+   \   00027C   E8           MOV     A,R0
+   \   00027D   2401         ADD     A,#0x1
+   \   00027F   08           INC     R0
+   \   000280   E9           MOV     A,R1
+   \   000281   3400         ADDC    A,#0x0
+   \   000283   F9           MOV     R1,A
+   \   000284   C3           CLR     C
+   \   000285   E8           MOV     A,R0
+   \   000286   9404         SUBB    A,#0x4
+   \   000288   E9           MOV     A,R1
+   \   000289   9400         SUBB    A,#0x0
+   \   00028B   4003         JC      $+5
+   \   00028D   02....       LJMP    ??SampleApp_ProcessMSGCmd_1 & 0xFFFF
+   \   000290   80A3         SJMP    ??SampleApp_ProcessMSGCmd_7
     644                    
     645                  }break;
     646                case 1002://协调器向终端发送按键消息
@@ -1711,111 +1706,296 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char const *"
    \                     ??SampleApp_ProcessMSGCmd_4:
-   \   00029A                ; Setup parameters for call to function strstr
-   \   00029A   7C..         MOV     R4,#`?<Constant "switch1,1">` & 0xff
-   \   00029C   7D..         MOV     R5,#(`?<Constant "switch1,1">` >> 8) & 0xff
-   \   00029E   7404         MOV     A,#0x4
-   \   0002A0   12....       LCALL   ?XSTACK_DISP0_8
-   \   0002A3   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \   000292                ; Setup parameters for call to function strstr
+   \   000292   7C..         MOV     R4,#`?<Constant "switch1,1">` & 0xff
+   \   000294   7D..         MOV     R5,#(`?<Constant "switch1,1">` >> 8) & 0xff
+   \   000296   7404         MOV     A,#0x4
+   \   000298   12....       LCALL   ?XSTACK_DISP0_8
+   \   00029B   12....       LCALL   ?Subroutine6 & 0xFFFF
    \                     ??CrossCallReturnLabel_5:
-   \   0002A6   6004         JZ      ??SampleApp_ProcessMSGCmd_10
+   \   00029E   6005         JZ      ??SampleApp_ProcessMSGCmd_10
     653                    {
     654                      P0_5 = 1;
-   \   0002A8   D285         SETB    0x80.5
-   \   0002AA   8034         SJMP    ??SampleApp_ProcessMSGCmd_1
-    655                    }
-    656                    else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
+   \   0002A0   D285         SETB    0x80.5
+    655                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+                                                                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   0002A2                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   0002A2                ; Setup parameters for call to function strlen
+   \   0002A2   02....       LJMP    ??SampleApp_ProcessMSGCmd_11 & 0xFFFF
+    656                    }
+    657                    else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
                                                 ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char const *"
    \                     ??SampleApp_ProcessMSGCmd_10:
-   \   0002AC                ; Setup parameters for call to function strstr
-   \   0002AC   7C..         MOV     R4,#`?<Constant "switch1,0">` & 0xff
-   \   0002AE   7D..         MOV     R5,#(`?<Constant "switch1,0">` >> 8) & 0xff
-   \   0002B0   7404         MOV     A,#0x4
-   \   0002B2   12....       LCALL   ?XSTACK_DISP0_8
-   \   0002B5   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \   0002A5                ; Setup parameters for call to function strstr
+   \   0002A5   7C..         MOV     R4,#`?<Constant "switch1,0">` & 0xff
+   \   0002A7   7D..         MOV     R5,#(`?<Constant "switch1,0">` >> 8) & 0xff
+   \   0002A9   7404         MOV     A,#0x4
+   \   0002AB   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002AE   12....       LCALL   ?Subroutine6 & 0xFFFF
    \                     ??CrossCallReturnLabel_6:
-   \   0002B8   6004         JZ      ??SampleApp_ProcessMSGCmd_11
-    657                    {
-    658                      P0_5 = 0;
-   \   0002BA   C285         CLR     0x80.5
-   \   0002BC   8022         SJMP    ??SampleApp_ProcessMSGCmd_1
-    659                    }
-    660                    else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
-                                                ^
+   \   0002B1   6005         JZ      ??SampleApp_ProcessMSGCmd_12
+    658                    {
+    659                      P0_5 = 0;
+   \   0002B3   C285         CLR     0x80.5
+    660                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+                                                                                         ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char const *"
-   \                     ??SampleApp_ProcessMSGCmd_11:
-   \   0002BE                ; Setup parameters for call to function strstr
-   \   0002BE   7C..         MOV     R4,#`?<Constant "switch2,1">` & 0xff
-   \   0002C0   7D..         MOV     R5,#(`?<Constant "switch2,1">` >> 8) & 0xff
-   \   0002C2   7404         MOV     A,#0x4
-   \   0002C4   12....       LCALL   ?XSTACK_DISP0_8
-   \   0002C7   12....       LCALL   ?Subroutine6 & 0xFFFF
-   \                     ??CrossCallReturnLabel_7:
-   \   0002CA   6004         JZ      ??SampleApp_ProcessMSGCmd_12
-    661                    {
-    662                      P0_7 = 1;
-   \   0002CC   D287         SETB    0x80.7
-   \   0002CE   8010         SJMP    ??SampleApp_ProcessMSGCmd_1
-    663                    }
-    664                    else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
+   \   0002B5                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   0002B5                ; Setup parameters for call to function strlen
+   \   0002B5   02....       LJMP    ??SampleApp_ProcessMSGCmd_11 & 0xFFFF
+    661                    }
+    662                    else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
                                                 ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char const *"
    \                     ??SampleApp_ProcessMSGCmd_12:
-   \   0002D0                ; Setup parameters for call to function strstr
-   \   0002D0   7C..         MOV     R4,#`?<Constant "switch2,0">` & 0xff
-   \   0002D2   7D..         MOV     R5,#(`?<Constant "switch2,0">` >> 8) & 0xff
-   \   0002D4   7404         MOV     A,#0x4
-   \   0002D6   12....       LCALL   ?XSTACK_DISP0_8
-   \   0002D9   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \   0002B8                ; Setup parameters for call to function strstr
+   \   0002B8   7C..         MOV     R4,#`?<Constant "switch2,1">` & 0xff
+   \   0002BA   7D..         MOV     R5,#(`?<Constant "switch2,1">` >> 8) & 0xff
+   \   0002BC   7404         MOV     A,#0x4
+   \   0002BE   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002C1   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \                     ??CrossCallReturnLabel_7:
+   \   0002C4   6005         JZ      ??SampleApp_ProcessMSGCmd_13
+    663                    {
+    664                      P0_7 = 1;
+   \   0002C6   D287         SETB    0x80.7
+    665                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+                                                                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   0002C8                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   0002C8                ; Setup parameters for call to function strlen
+   \   0002C8   02....       LJMP    ??SampleApp_ProcessMSGCmd_11 & 0xFFFF
+    666                    }
+    667                    else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
+                                                ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \                     ??SampleApp_ProcessMSGCmd_13:
+   \   0002CB                ; Setup parameters for call to function strstr
+   \   0002CB   7C..         MOV     R4,#`?<Constant "switch2,0">` & 0xff
+   \   0002CD   7D..         MOV     R5,#(`?<Constant "switch2,0">` >> 8) & 0xff
+   \   0002CF   7404         MOV     A,#0x4
+   \   0002D1   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002D4   12....       LCALL   ?Subroutine6 & 0xFFFF
    \                     ??CrossCallReturnLabel_8:
-   \   0002DC   6002         JZ      ??SampleApp_ProcessMSGCmd_1
-    665                    {
-    666                      P0_7 = 0;
-   \   0002DE   C287         CLR     0x80.7
-    667                    }
-    668                  }break;
-    669                }
-    670          #ifdef ZDO_COORDINATOR
-    671                if(onenet_login_ok==3)
-    672                {
-    673                  //发送温湿度数据到onenet
-    674                  //    OneNet_SendData(end_temp, end_hum);
-    675                  
-    676                  sprintf(mqtt_message, 
-    677                          "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
-    678                            \"code\":\"%s\"\
-    679                },\"version\":\"1.0.0\"}",
-    680                data);
-    681                //mqtt_publish_topic(topics_post, mqtt_message);
-    682                
-    683                //  OneNet_publish_topic();
-    684                }
-    685          #endif
-    686              }break;
-    687              
-    688            case SAMPLEAPP_PERIODIC_CLUSTERID:
-    689              
-    690              break;
-    691              
-    692            default:
-    693              break;
-    694            }
-    695          }
+   \   0002D7   6004         JZ      ??SampleApp_ProcessMSGCmd_14
+    668                    {
+    669                      P0_7 = 0;
+   \   0002D9   C287         CLR     0x80.7
+    670                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+                                                                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   0002DB                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   0002DB                ; Setup parameters for call to function strlen
+   \   0002DB   806E         SJMP    ??SampleApp_ProcessMSGCmd_11
+    671                    }
+    672                    
+    673                    else if(NULL!=strstr(data,"switch1,ck"))//判断消息查询开关switch1命令
+                                                ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \                     ??SampleApp_ProcessMSGCmd_14:
+   \   0002DD                ; Setup parameters for call to function strstr
+   \   0002DD   7C..         MOV     R4,#`?<Constant "switch1,ck">` & 0xff
+   \   0002DF   7D..         MOV     R5,#(`?<Constant "switch1,ck">` >> 8) & 0xff
+   \   0002E1   7404         MOV     A,#0x4
+   \   0002E3   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002E6   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \                     ??CrossCallReturnLabel_9:
+   \   0002E9   6012         JZ      ??SampleApp_ProcessMSGCmd_15
+    674                    {
+    675                      data[strlen(data)-2]='\0';
+                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   0002EB                ; Setup parameters for call to function strlen
+   \   0002EB   7404         MOV     A,#0x4
+   \   0002ED   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002F0   12....       LCALL   ?Subroutine8 & 0xFFFF
+   \                     ??CrossCallReturnLabel_13:
+   \   0002F3   12....       LCALL   ?XSTACK_DISP0_8
+   \   0002F6   12....       LCALL   ?Subroutine7 & 0xFFFF
+    676                      sprintf(data,"%s%d",data,P0_5);
+                                     ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char *"
+   \                     ??CrossCallReturnLabel_11:
+   \   0002F9                ; Setup parameters for call to function sprintf
+   \   0002F9   A285         MOV     C,0x80.5
+   \   0002FB   801E         SJMP    ??SampleApp_ProcessMSGCmd_16
+   \   0002FD                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   0002FD                ; Setup parameters for call to function strlen
+    677                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+                                                                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+    678                    }
+    679                    else if(NULL!=strstr(data,"switch2,ck"))//判断消息查询开关switch2命令
+                                                ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \                     ??SampleApp_ProcessMSGCmd_15:
+   \   0002FD                ; Setup parameters for call to function strstr
+   \   0002FD   7C..         MOV     R4,#`?<Constant "switch2,ck">` & 0xff
+   \   0002FF   7D..         MOV     R5,#(`?<Constant "switch2,ck">` >> 8) & 0xff
+   \   000301   7404         MOV     A,#0x4
+   \   000303   12....       LCALL   ?XSTACK_DISP0_8
+   \   000306   12....       LCALL   ?Subroutine6 & 0xFFFF
+   \                     ??CrossCallReturnLabel_10:
+   \   000309   606D         JZ      ??SampleApp_ProcessMSGCmd_1
+    680                    {
+    681                      data[strlen(data)-2]='\0';
+                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   00030B                ; Setup parameters for call to function strlen
+   \   00030B   7404         MOV     A,#0x4
+   \   00030D   12....       LCALL   ?XSTACK_DISP0_8
+   \   000310   12....       LCALL   ?Subroutine8 & 0xFFFF
+   \                     ??CrossCallReturnLabel_14:
+   \   000313   12....       LCALL   ?XSTACK_DISP0_8
+   \   000316   12....       LCALL   ?Subroutine7 & 0xFFFF
+    682                      sprintf(data,"%s%d",data,P0_7);
+                                     ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char *"
+   \                     ??CrossCallReturnLabel_12:
+   \   000319                ; Setup parameters for call to function sprintf
+   \   000319   A287         MOV     C,0x80.7
+   \                     ??SampleApp_ProcessMSGCmd_16:
+   \   00031B   33           RLC     A
+   \   00031C   F5..         MOV     ?V0 + 0,A
+   \   00031E   75..00       MOV     ?V0 + 1,#0x0
+   \   000321   78..         MOV     R0,#?V0 + 0
+   \   000323   12....       LCALL   ?PUSH_XSTACK_I_TWO
+   \   000326   7406         MOV     A,#0x6
+   \   000328   12....       LCALL   ?XSTACK_DISP0_8
+   \   00032B   8582..       MOV     ?V0 + 0,DPL
+   \   00032E   8583..       MOV     ?V0 + 1,DPH
+   \   000331   78..         MOV     R0,#?V0 + 0
+   \   000333   12....       LCALL   ?PUSH_XSTACK_I_TWO
+   \   000336   7C..         MOV     R4,#`?<Constant "%s%d">` & 0xff
+   \   000338   7D..         MOV     R5,#(`?<Constant "%s%d">` >> 8) & 0xff
+   \   00033A   7408         MOV     A,#0x8
+   \   00033C   12....       LCALL   ?XSTACK_DISP0_8
+   \   00033F   AA82         MOV     R2,DPL
+   \   000341   AB83         MOV     R3,DPH
+   \   000343   12....       LCALL   ??sprintf?relay
+   \   000346   7404         MOV     A,#0x4
+   \   000348   12....       LCALL   ?DEALLOC_XSTACK8
+    683                      SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+                                                                                         ^
+Warning[Pe167]: argument of type "unsigned char *" is incompatible with
+          parameter of type "char const *"
+   \   00034B                ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+   \   00034B                ; Setup parameters for call to function strlen
+   \                     ??SampleApp_ProcessMSGCmd_11:
+   \   00034B   7404         MOV     A,#0x4
+   \   00034D   12....       LCALL   ?XSTACK_DISP0_8
+   \   000350   AA82         MOV     R2,DPL
+   \   000352   AB83         MOV     R3,DPH
+   \   000354   12....       LCALL   ??strlen?relay
+   \   000357   8A..         MOV     ?V0 + 0,R2
+   \   000359   8B..         MOV     ?V0 + 1,R3
+   \   00035B   78..         MOV     R0,#?V0 + 0
+   \   00035D   12....       LCALL   ?PUSH_XSTACK_I_TWO
+   \   000360   7406         MOV     A,#0x6
+   \   000362   12....       LCALL   ?XSTACK_DISP0_8
+   \   000365   8582..       MOV     ?V0 + 0,DPL
+   \   000368   8583..       MOV     ?V0 + 1,DPH
+   \   00036B   78..         MOV     R0,#?V0 + 0
+   \   00036D   12....       LCALL   ?PUSH_XSTACK_I_TWO
+   \   000370   7C05         MOV     R4,#0x5
+    684                    }
+    685                  }break;
+    686                case 1005://协调器收到终端向反馈的查询结果  data = "dev2,switch1,0",立即发送给服务器
+    687                  {
+    688                    //todo
+    689                    //查询结果消息为{"msg":"dev2,switch1,0","flow":201}
+    690                    #ifdef ZDO_COORDINATOR
+    691                    if(onenet_login_ok==2)
+    692                    {
+    693                      Response2mqtt(data);
+    694                    }
+    695                    #endif
+    696                  }break;
+    697                }
+    698          #ifdef ZDO_COORDINATOR
+    699                if(onenet_login_ok==3)
+    700                {
+    701                  //发送温湿度数据到onenet
+    702                  //    OneNet_SendData(end_temp, end_hum);
+    703                  
+    704                  sprintf(mqtt_message, 
+    705                          "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
+    706                            \"code\":\"%s\"\
+    707                },\"version\":\"1.0.0\"}",
+    708                data);
+    709                //mqtt_publish_topic(topics_post, mqtt_message);
+    710                
+    711                //  OneNet_publish_topic();
+    712                }
+    713          #endif
+    714              }break;
+    715              
+    716            case SAMPLEAPP_PERIODIC_CLUSTERID:
+    717              
+    718              break;
+    719              
+    720            default:
+    721              break;
+    722            }
+   \   000372   12....       LCALL   ??Subroutine11_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_24:
+   \   000375   12....       LCALL   ?DEALLOC_XSTACK8
+    723          }
    \                     ??SampleApp_ProcessMSGCmd_1:
-   \   0002E0   74CC         MOV     A,#-0x34
-   \   0002E2                REQUIRE ?Subroutine1
-   \   0002E2                REQUIRE _A_P0
-   \   0002E2                ; // Fall through to label ?Subroutine1
+   \   000378   74CC         MOV     A,#-0x34
+   \   00037A                REQUIRE ?Subroutine1
+   \   00037A                REQUIRE _A_P0
+   \   00037A                ; // Fall through to label ?Subroutine1
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine1:
    \   000000   12....       LCALL   ?DEALLOC_XSTACK8
    \   000003   7F06         MOV     R7,#0x6
    \   000005   02....       LJMP    ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine8:
+   \   000000   AA82         MOV     R2,DPL
+   \   000002   AB83         MOV     R3,DPH
+   \   000004   12....       LCALL   ??strlen?relay
+   \   000007   8A..         MOV     ?V0 + 0,R2
+   \   000009   8B..         MOV     ?V0 + 1,R3
+   \   00000B   7404         MOV     A,#0x4
+   \   00000D   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine7:
+   \   000000   E582         MOV     A,DPL
+   \   000002   25..         ADD     A,?V0 + 0
+   \   000004   F8           MOV     R0,A
+   \   000005   E583         MOV     A,DPH
+   \   000007   35..         ADDC    A,?V0 + 1
+   \   000009   F9           MOV     R1,A
+   \   00000A   E8           MOV     A,R0
+   \   00000B   24FE         ADD     A,#-0x2
+   \   00000D   F582         MOV     DPL,A
+   \   00000F   E9           MOV     A,R1
+   \   000010   34FF         ADDC    A,#-0x1
+   \   000012   F583         MOV     DPH,A
+   \   000014   E4           CLR     A
+   \   000015   F0           MOVX    @DPTR,A
+   \   000016   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine6:
@@ -1828,11 +2008,11 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   00000C   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine3:
+   \                     ?Subroutine4:
    \   000000   AA82         MOV     R2,DPL
    \   000002   AB83         MOV     R3,DPH
-   \   000004                REQUIRE ??Subroutine10_0
-   \   000004                ; // Fall through to label ??Subroutine10_0
+   \   000004                REQUIRE ??Subroutine12_0
+   \   000004                ; // Fall through to label ??Subroutine12_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine2:
@@ -1841,202 +2021,202 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000001   85..82       MOV     DPL,?XSP + 0
    \   000004   85..83       MOV     DPH,?XSP + 1
    \   000007   22           RET
-    696          
-    697          #ifdef ZDO_COORDINATOR
-    698          
-    699          //发送MQTT数据
-    700          void ESP8266_SendData(char* buff, int len)
-    701          {
-    702            if(len==0) return;
-    703            
-    704            HalUARTWrite(0,buff, len);
-    705          }
-    706          
-    707          
-    708          //接收到下发命令，或者接收到订阅的消息
-    709          //topic:收到的主题
-    710          //cmd::主题对应的内容
-    711          void mqtt_rx(uint8* topic, uint8* cmd)
-    712          {
-    713            
-    714            /*
-    715            /a1xaMw4YerO/device/user/receive
-    716            {
-    717          "msg":"balabala",
-    718            "flow":201  //201表示数据流转方向为设备2流向设备1
-    719          }
-    720            */
-    721            
-    722             HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
-    723            HalLcdWriteString((char*)cmd, HAL_LCD_LINE_2); //LCD显示
-    724            if(topic == NULL || cmd==NULL) return;
-    725            uint8 buff[100]={0};
-    726            uint8 method[100]={0};
-    727            uint8 msg[100]={0};
-    728            uint8* p_buff = NULL;
-    729            memcpy(buff,topic,strlen(topic)+1);
-    730            p_buff = strrchr(buff,'/')+1;
-    731            memcpy(method,p_buff,strlen(p_buff)+1);
-    732          
-    733            
-    734            if(0==strcmp(method,"receive"))
-    735            {
-    736          //          memcpy(MqttRecMsg,cmd,strlen(cmd));  
-    737          //          osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,1000);
-    738          //          //不知道啥原因，一旦发送消息触发SAMPLEAPP_COOR_CHECK_MQTT_EVT事件，似乎协调器就会死机无法继续发送消息至终端，按键事件也无法发送
-    739          //          HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
-    740              if(MqttRecMsg[0]=='\0')
-    741                  {
-    742                    memcpy(MqttRecMsg,cmd,strlen(cmd));  
-    743                    osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,10 );
-    744                    HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
-    745                  }
-    746                  else{
-    747                    //osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,5 );
-    748                  Response2mqtt("too many msg, hold on");
-    749                  HalLcdWriteString("too many msg", HAL_LCD_LINE_4);
-    750                  }
-    751            }
-    752           
-    753          
-    754            //HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
-    755            //HalLcdWriteString((char*)msg, HAL_LCD_LINE_2); //LCD显示
-    756          
-    757          }
-    758          
-    759          
-    760          void Response2mqtt(uint8* returnMsg)
-    761          {
-    762              sprintf(mqtt_message,"{\"msg\":\"%s\",\"flow\":201}",returnMsg);  
-    763                  
-    764                //发布主题
-    765                mqtt_publish_topic(topics_post, mqtt_message);
-    766                
-    767          }
-    768          
-    769          bool OneNet_publish_topic(const char *topic, const char *msg)
-    770          { 
-    771            //uint8 buff[100]={0};
-    772            
-    773            //sprintf(buff, "topic:%s,msg:%s", topic, msg);
-    774            
-    775            /*  发布主题为"hello_topic_public"，消息为温度和湿度 */
-    776            return mqtt_publish_topic(topic, msg);
-    777          }
-    778          
-    779          
-    780          
-    781          /*********************************************************************
-    782          * @fn      SampleApp_CallBack
-    783          *
-    784          * @brief   Send data OTA.
-    785          *
-    786          * @param   port - UART port.
-    787          * @param   event - the UART port event flag.
-    788          *
-    789          * @return  none
-    790          */
-    791          uint32 lastReadMs=0;
-    792          void SampleApp_CallBack(uint8 port, uint8 event)
-    793          {
-    794            (void)port;
-    795            
-    796            if(0==onenet_login_ok)
-    797            {
-    798              HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
-    799              SampleApp_RxLen=0;
-    800              osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX);
-    801            }
-    802            else if(1==onenet_login_ok)//onenet注册成功 0:未注册，1：注册中　2：注册成功
-    803            {
-    804              //一个一个字节读
-    805              SampleApp_RxLen += HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf+SampleApp_RxLen, 4);
-    806              
-    807              //判断是否是注册成功
-    808              if(SampleApp_RxLen>=4)
-    809              {
-    810                debug("rx len=%d(%x,%x,%x,%x)\r\n", SampleApp_RxLen,SampleApp_RxBuf[0],SampleApp_RxBuf[1],SampleApp_RxBuf[2],SampleApp_RxBuf[3]);
-    811                
-    812                //等待接入响应
-    813                if(MQTT_UnPacketRecv(SampleApp_RxBuf) == MQTT_PKT_CONNACK)
-    814                {
-    815                  if(0==MQTT_UnPacketConnectAck(SampleApp_RxBuf))
-    816                  {
-    817                    onenet_login_ok=2;//注册成功
-    818                    SampleApp_RxLen=0;
-    819                    
-    820                    //请求订阅主题
-    821                    mqtt_subscribe_topic(g_mqtt_topics_set, 1);
-    822                  }
-    823                }
-    824              }
-    825              
-    826              //数组满，清0
-    827              if(SampleApp_RxLen>=SAMPLE_APP_RX_MAX)
-    828              {
-    829                SampleApp_RxLen=0;
-    830              }
-    831            }
-    832            else if(2==onenet_login_ok)
-    833            {
-    834              //如果是注册成功，读服务器的控制命令
-    835              
-    836              uint32 curMs=osal_GetSystemClock();
-    837              
-    838              if((curMs-lastReadMs)<1000) return;
-    839              
-    840              lastReadMs=curMs;
-    841              SampleApp_RxLen=0;
-    842              osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
-    843              SampleApp_RxLen = HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
-    844              
-    845              
-    846              
-    847              if(SampleApp_RxLen>0)
-    848              {
-    849                debug("rx len=%d.\r\n", SampleApp_RxLen);
-    850                
-    851                OneNet_RevPro(SampleApp_RxBuf);// /sys/a1VZAPhhRWF/zigbee-coor/thing/service/property/set {"method":...}
-    852                SampleApp_RxLen=0;
-    853                osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
-    854              }
-    855            }
-    856            
-    857          }
-    858          
-    859          #else
-    860          
-    861          /*********************************************************************
-    862          * @fn      SampleApp_Send_P2P_Message
-    863          *
-    864          * @brief   point to point.
-    865          *
-    866          * @param   none
-    867          *
-    868          * @return  none
-    869          */
-    870          void SampleApp_Send_P2P_Message( void )
-    871          {
-    872            uint8 str[5]={0};
-    873            uint8 strTemp[20]={0};
-    874            int len=0;
-    875            
-    876            DHT11();             //获取温湿度
-    877            
-    878            str[0] = wendu;//温度
-    879            str[1] = shidu;//湿度
-    880            len=2;
-    881            
-    882            sprintf(strTemp, "T&H:%d %d", str[0],str[1]);
+    724          
+    725          #ifdef ZDO_COORDINATOR
+    726          
+    727          //发送MQTT数据
+    728          void ESP8266_SendData(char* buff, int len)
+    729          {
+    730            if(len==0) return;
+    731            
+    732            HalUARTWrite(0,buff, len);
+    733          }
+    734          
+    735          
+    736          //接收到下发命令，或者接收到订阅的消息
+    737          //topic:收到的主题
+    738          //cmd::主题对应的内容
+    739          void mqtt_rx(uint8* topic, uint8* cmd)
+    740          {
+    741            
+    742            /*
+    743            /a1xaMw4YerO/device/user/receive
+    744            {
+    745            "msg":"balabala",
+    746            "flow":201  //201表示数据流转方向为设备2流向设备1
+    747          }
+    748            */
+    749            
+    750            HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
+    751            HalLcdWriteString((char*)cmd, HAL_LCD_LINE_2); //LCD显示
+    752            if(topic == NULL || cmd==NULL) return;
+    753            uint8 buff[100]={0};
+    754            uint8 method[100]={0};
+    755            uint8 msg[100]={0};
+    756            uint8* p_buff = NULL;
+    757            memcpy(buff,topic,strlen(topic)+1);
+    758            p_buff = strrchr(buff,'/')+1;
+    759            memcpy(method,p_buff,strlen(p_buff)+1);
+    760            
+    761            
+    762            if(0==strcmp(method,"receive"))
+    763            {
+    764              //          memcpy(MqttRecMsg,cmd,strlen(cmd));  
+    765              //          osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,1000);
+    766              //          //不知道啥原因，一旦发送消息触发SAMPLEAPP_COOR_CHECK_MQTT_EVT事件，似乎协调器就会死机无法继续发送消息至终端，按键事件也无法发送
+    767              //          HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
+    768              if(MqttRecMsg[0]=='\0')
+    769              {
+    770                memcpy(MqttRecMsg,cmd,strlen(cmd));  
+    771                osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,10 );
+    772                HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
+    773              }
+    774              else{
+    775                //osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,5 );
+    776                Response2mqtt("too many msg, hold on");
+    777                HalLcdWriteString("too many msg", HAL_LCD_LINE_4);
+    778              }
+    779            }
+    780            
+    781            
+    782            //HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
+    783            //HalLcdWriteString((char*)msg, HAL_LCD_LINE_2); //LCD显示
+    784            
+    785          }
+    786          
+    787          
+    788          void Response2mqtt(uint8* returnMsg)
+    789          {
+    790            sprintf(mqtt_message,"{\"msg\":\"%s\",\"flow\":201}",returnMsg);  
+    791            
+    792            //发布主题
+    793            mqtt_publish_topic(topics_post, mqtt_message);
+    794            
+    795          }
+    796          
+    797          bool OneNet_publish_topic(const char *topic, const char *msg)
+    798          { 
+    799            //uint8 buff[100]={0};
+    800            
+    801            //sprintf(buff, "topic:%s,msg:%s", topic, msg);
+    802            
+    803            /*  发布主题为"hello_topic_public"，消息为温度和湿度 */
+    804            return mqtt_publish_topic(topic, msg);
+    805          }
+    806          
+    807          
+    808          
+    809          /*********************************************************************
+    810          * @fn      SampleApp_CallBack
+    811          *
+    812          * @brief   Send data OTA.
+    813          *
+    814          * @param   port - UART port.
+    815          * @param   event - the UART port event flag.
+    816          *
+    817          * @return  none
+    818          */
+    819          uint32 lastReadMs=0;
+    820          void SampleApp_CallBack(uint8 port, uint8 event)
+    821          {
+    822            (void)port;
+    823            
+    824            if(0==onenet_login_ok)
+    825            {
+    826              HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
+    827              SampleApp_RxLen=0;
+    828              osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX);
+    829            }
+    830            else if(1==onenet_login_ok)//onenet注册成功 0:未注册，1：注册中　2：注册成功
+    831            {
+    832              //一个一个字节读
+    833              SampleApp_RxLen += HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf+SampleApp_RxLen, 4);
+    834              
+    835              //判断是否是注册成功
+    836              if(SampleApp_RxLen>=4)
+    837              {
+    838                debug("rx len=%d(%x,%x,%x,%x)\r\n", SampleApp_RxLen,SampleApp_RxBuf[0],SampleApp_RxBuf[1],SampleApp_RxBuf[2],SampleApp_RxBuf[3]);
+    839                
+    840                //等待接入响应
+    841                if(MQTT_UnPacketRecv(SampleApp_RxBuf) == MQTT_PKT_CONNACK)
+    842                {
+    843                  if(0==MQTT_UnPacketConnectAck(SampleApp_RxBuf))
+    844                  {
+    845                    onenet_login_ok=2;//注册成功
+    846                    SampleApp_RxLen=0;
+    847                    
+    848                    //请求订阅主题
+    849                    mqtt_subscribe_topic(g_mqtt_topics_set, 1);
+    850                  }
+    851                }
+    852              }
+    853              
+    854              //数组满，清0
+    855              if(SampleApp_RxLen>=SAMPLE_APP_RX_MAX)
+    856              {
+    857                SampleApp_RxLen=0;
+    858              }
+    859            }
+    860            else if(2==onenet_login_ok)
+    861            {
+    862              //如果是注册成功，读服务器的控制命令
+    863              
+    864              uint32 curMs=osal_GetSystemClock();
+    865              
+    866              if((curMs-lastReadMs)<1000) return;
+    867              
+    868              lastReadMs=curMs;
+    869              SampleApp_RxLen=0;
+    870              osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
+    871              SampleApp_RxLen = HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
+    872              
+    873              
+    874              
+    875              if(SampleApp_RxLen>0)
+    876              {
+    877                debug("rx len=%d.\r\n", SampleApp_RxLen);
+    878                
+    879                OneNet_RevPro(SampleApp_RxBuf);// /sys/a1VZAPhhRWF/zigbee-coor/thing/service/property/set {"method":...}
+    880                SampleApp_RxLen=0;
+    881                osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
+    882              }
+    883            }
+    884            
+    885          }
+    886          
+    887          #else
+    888          
+    889          /*********************************************************************
+    890          * @fn      SampleApp_Send_P2P_Message
+    891          *
+    892          * @brief   point to point.
+    893          *
+    894          * @param   none
+    895          *
+    896          * @return  none
+    897          */
+    898          void SampleApp_Send_P2P_Message( void )
+    899          {
+    900            uint8 str[5]={0};
+    901            uint8 strTemp[20]={0};
+    902            int len=0;
+    903            
+    904            DHT11();             //获取温湿度
+    905            
+    906            str[0] = wendu;//温度
+    907            str[1] = shidu;//湿度
+    908            len=2;
+    909            
+    910            sprintf(strTemp, "T&H:%d %d", str[0],str[1]);
                            ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char *"
-    883            HalLcdWriteString(strTemp, HAL_LCD_LINE_3); //LCD显示
+    911            HalLcdWriteString(strTemp, HAL_LCD_LINE_3); //LCD显示
                                      ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char *"
-    884            
-    885            HalUARTWrite(0, strTemp, osal_strlen(strTemp));           //串口输出提示信息
+    912            
+    913            HalUARTWrite(0, strTemp, osal_strlen(strTemp));           //串口输出提示信息
                                                         ^
 Warning[Pe167]: argument of type "unsigned char *" is incompatible with
           parameter of type "char *"
@@ -2048,39 +2228,39 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
 
   void SampleApp_Send_P2P_Message( void )
        ^
-"e:\imtht\Documents\Code\Zigbee\ZStack-2.5.1a\Projects\zstack\Samples\SampleApp\Source\SampleApp.c",870  Warning[Pe177]: 
+"e:\imtht\Documents\Code\Zigbee\ZStack-2.5.1a\Projects\zstack\Samples\SampleApp\Source\SampleApp.c",898  Warning[Pe177]: 
           function "SampleApp_Send_P2P_Message" was declared but never
           referenced
-    886            HalUARTWrite(0, "\r\n",2);
-    887            
-    888            //无线发送到协调器
-    889            if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
-    890                                SAMPLEAPP_P2P_CLUSTERID,
-    891                                len,
-    892                                str,
-    893                                &SampleApp_MsgID,
-    894                                AF_DISCV_ROUTE,
-    895                                AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
-    896            {
-    897            }
-    898            else
-    899            {
-    900              // Error occurred in request to send.
-    901            }
-    902          }
-    903          
+    914            HalUARTWrite(0, "\r\n",2);
+    915            
+    916            //无线发送到协调器
+    917            if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
+    918                                SAMPLEAPP_P2P_CLUSTERID,
+    919                                len,
+    920                                str,
+    921                                &SampleApp_MsgID,
+    922                                AF_DISCV_ROUTE,
+    923                                AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+    924            {
+    925            }
+    926            else
+    927            {
+    928              // Error occurred in request to send.
+    929            }
+    930          }
+    931          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    904          void SampleApp_CallBack(uint8 port, uint8 event)
+    932          void SampleApp_CallBack(uint8 port, uint8 event)
    \                     SampleApp_CallBack:
-    905          {
+    933          {
    \   000000   C082         PUSH    DPL
    \   000002   C083         PUSH    DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-    906            (void)port;
-    907            
-    908            HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, 1);
+    934            (void)port;
+    935            
+    936            HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, 1);
    \   000004                ; Setup parameters for call to function HalUARTRead
    \   000004   7C01         MOV     R4,#0x1
    \   000006   7D00         MOV     R5,#0x0
@@ -2088,68 +2268,68 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   00000A   7B..         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
    \   00000C   7900         MOV     R1,#0x0
    \   00000E   12....       LCALL   ??HalUARTRead?relay
-    909            
-    910          }
+    937            
+    938          }
    \   000011   D083         POP     DPH
    \   000013   D082         POP     DPL
    \   000015   02....       LJMP    ?BRET
-    911          
-    912          
-    913          #endif
-    914          
-    915          
-    916          //调试信息输出
+    939          
+    940          
+    941          #endif
+    942          
+    943          
+    944          //调试信息输出
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    917          void debug(uint8 * msg, ...)
+    945          void debug(uint8 * msg, ...)
    \                     debug:
-    918          {
+    946          {
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
-    919          #if 0
-    920            uint8 len=0;
-    921            char info[100] = {0};
-    922            va_list args;
-    923            
-    924            if(msg==NULL) return;
-    925            
-    926            va_start(args, msg);
-    927            vsprintf(info, (const char*)msg, args);
-    928            va_end(args);
-    929            
-    930            len=osal_strlen((char *)info);
-    931            if(len==0) return;
-    932            
-    933            
-    934            HalUARTWrite(0,info, len);//串口0发送
-    935          #endif
-    936          }
+    947          #if 0
+    948            uint8 len=0;
+    949            char info[100] = {0};
+    950            va_list args;
+    951            
+    952            if(msg==NULL) return;
+    953            
+    954            va_start(args, msg);
+    955            vsprintf(info, (const char*)msg, args);
+    956            va_end(args);
+    957            
+    958            len=osal_strlen((char *)info);
+    959            if(len==0) return;
+    960            
+    961            
+    962            HalUARTWrite(0,info, len);//串口0发送
+    963          #endif
+    964          }
    \   000000   02....       LJMP    ?BRET
-    937          
+    965          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    938          void SampleApp_getIEEEAddr(uint8* IEEEAddr)//length of IEEEAddr should be Z_EXTADDR_LEN*2
+    966          void SampleApp_getIEEEAddr(uint8* IEEEAddr)//length of IEEEAddr should be Z_EXTADDR_LEN*2
    \                     SampleApp_getIEEEAddr:
-    939          {
+    967          {
    \   000000   74F4         MOV     A,#-0xc
    \   000002   12....       LCALL   ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 12
    \   000005                ; Auto size: 0
-    940          
-    941            uint8 i;
-    942            uint8 *xad;
-    943            //uint8 lcd_buf[Z_EXTADDR_LEN*2+1];
-    944            
-    945            // Display the extended address.
-    946            xad = aExtendedAddress + Z_EXTADDR_LEN - 1;
+    968            
+    969            uint8 i;
+    970            uint8 *xad;
+    971            //uint8 lcd_buf[Z_EXTADDR_LEN*2+1];
+    972            
+    973            // Display the extended address.
+    974            xad = aExtendedAddress + Z_EXTADDR_LEN - 1;
    \   000005   78..         MOV     R0,#(aExtendedAddress + 7) & 0xff
    \   000007   79..         MOV     R1,#((aExtendedAddress + 7) >> 8) & 0xff
-    947            
-    948            for (i = 0; i < Z_EXTADDR_LEN*2; xad--)
+    975            
+    976            for (i = 0; i < Z_EXTADDR_LEN*2; xad--)
    \   000009   7E00         MOV     R6,#0x0
-    949            {
-    950              uint8 ch;
-    951              ch = (*xad >> 4) & 0x0F;
+    977            {
+    978              uint8 ch;
+    979              ch = (*xad >> 4) & 0x0F;
    \                     ??SampleApp_getIEEEAddr_0:
    \   00000B   8882         MOV     DPL,R0
    \   00000D   8983         MOV     DPH,R1
@@ -2157,7 +2337,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000010   C4           SWAP    A
    \   000011   540F         ANL     A,#0xf
    \   000013   FF           MOV     R7,A
-    952              IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
+    980              IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
    \   000014   8E..         MOV     ?V0 + 2,R6
    \   000016   0E           INC     R6
    \   000017   C3           CLR     C
@@ -2172,17 +2352,17 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000023   2F           ADD     A,R7
    \   000024   C0E0         PUSH    A
    \   000026   85....       MOV     ?V0 + 0,?V0 + 2
-   \   000029   12....       LCALL   ?Subroutine7 & 0xFFFF
-   \                     ??CrossCallReturnLabel_9:
+   \   000029   12....       LCALL   ?Subroutine9 & 0xFFFF
+   \                     ??CrossCallReturnLabel_15:
    \   00002C   D0E0         POP     A
    \   00002E   F0           MOVX    @DPTR,A
-    953              ch = *xad & 0x0F;
+    981              ch = *xad & 0x0F;
    \   00002F   8882         MOV     DPL,R0
    \   000031   8983         MOV     DPH,R1
    \   000033   E0           MOVX    A,@DPTR
    \   000034   540F         ANL     A,#0xf
    \   000036   FF           MOV     R7,A
-    954              IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
+    982              IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
    \   000037   8E..         MOV     ?V0 + 3,R6
    \   000039   0E           INC     R6
    \   00003A   C3           CLR     C
@@ -2197,9 +2377,9 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000046   2F           ADD     A,R7
    \   000047   C0E0         PUSH    A
    \   000049   85....       MOV     ?V0 + 0,?V0 + 3
-   \   00004C   12....       LCALL   ?Subroutine7 & 0xFFFF
-    955            }
-   \                     ??CrossCallReturnLabel_10:
+   \   00004C   12....       LCALL   ?Subroutine9 & 0xFFFF
+    983            }
+   \                     ??CrossCallReturnLabel_16:
    \   00004F   D0E0         POP     A
    \   000051   F0           MOVX    @DPTR,A
    \   000052   E8           MOV     A,R0
@@ -2212,7 +2392,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   00005B   C3           CLR     C
    \   00005C   9410         SUBB    A,#0x10
    \   00005E   40AB         JC      ??SampleApp_getIEEEAddr_0
-    956            IEEEAddr[Z_EXTADDR_LEN*2] = '\0';
+    984            IEEEAddr[Z_EXTADDR_LEN*2] = '\0';
    \   000060   EA           MOV     A,R2
    \   000061   2410         ADD     A,#0x10
    \   000063   F582         MOV     DPL,A
@@ -2221,11 +2401,11 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000068   F583         MOV     DPH,A
    \   00006A   E4           CLR     A
    \   00006B   F0           MOVX    @DPTR,A
-    957          }
+    985          }
    \   00006C   02....       LJMP    ?Subroutine0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine7:
+   \                     ?Subroutine9:
    \   000000   EA           MOV     A,R2
    \   000001   25..         ADD     A,?V0 + 0
    \   000003   F582         MOV     DPL,A
@@ -2233,12 +2413,12 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000006   3400         ADDC    A,#0x0
    \   000008   F583         MOV     DPH,A
    \   00000A   22           RET
-    958          
+    986          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    959          int SampleApp_SendPointToPointMessage(uint16 ReceiveAddr,uint16 DataId,uint8* SendData,uint16 Lens )//ReceiveAddr为接受设备的地址，DataId为数据识别码，4位16进制码，Lens仅写SendData长度即可
+    987          int SampleApp_SendPointToPointMessage(uint16 ReceiveAddr,uint16 DataId,uint8* SendData,uint16 Lens )//ReceiveAddr为接受设备的地址，DataId为数据识别码，4位16进制码，Lens仅写SendData长度即可
    \                     SampleApp_SendPointToPointMessage:
-    960          {
+    988          {
    \   000000   74F2         MOV     A,#-0xe
    \   000002   12....       LCALL   ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 14
@@ -2261,16 +2441,16 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000021   A3           INC     DPTR
    \   000022   E0           MOVX    A,@DPTR
    \   000023   F9           MOV     R1,A
-    961            //uint8 data[10]={'0','1','2','3','4','5','6','7','8','9'};//定义发送内容
-    962            //uint8 data[10]="0123456789";//上述方式二选一 
-    963            SampleApp_P2P_DstAddr.addr.shortAddr = ReceiveAddr;
+    989            //uint8 data[10]={'0','1','2','3','4','5','6','7','8','9'};//定义发送内容
+    990            //uint8 data[10]="0123456789";//上述方式二选一 
+    991            SampleApp_P2P_DstAddr.addr.shortAddr = ReceiveAddr;
    \   000024   90....       MOV     DPTR,#SampleApp_P2P_DstAddr
    \   000027   EA           MOV     A,R2
    \   000028   F0           MOVX    @DPTR,A
    \   000029   A3           INC     DPTR
    \   00002A   EB           MOV     A,R3
    \   00002B   12....       LCALL   ?Subroutine2 & 0xFFFF
-    964            uint8 FinalSendData[200]={0};
+    992            uint8 FinalSendData[200]={0};
    \                     ??CrossCallReturnLabel_2:
    \   00002E   AC82         MOV     R4,DPL
    \   000030   AD83         MOV     R5,DPH
@@ -2278,7 +2458,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000035   7582..       MOV     DPL,#`?<Constant {0}>_1` & 0xff
    \   000038   74C8         MOV     A,#-0x38
    \   00003A   12....       LCALL   ?MOVE_LONG8_XDATA_XDATA
-    965            sprintf((char*)FinalSendData,"%4x%4d%s",DataId,Lens+8,(char*)SendData);
+    993            sprintf((char*)FinalSendData,"%4x%4d%s",DataId,Lens+8,(char*)SendData);
    \   00003D   E8           MOV     A,R0
    \   00003E   2408         ADD     A,#0x8
    \   000040   F5..         MOV     ?V0 + 0,A
@@ -2301,7 +2481,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000063   12....       LCALL   ??sprintf?relay
    \   000066   7406         MOV     A,#0x6
    \   000068   12....       LCALL   ?DEALLOC_XSTACK8
-    966            printf("FinalSendData:%s\n",FinalSendData);
+    994            printf("FinalSendData:%s\n",FinalSendData);
    \   00006B                ; Setup parameters for call to function printf
    \   00006B   85..82       MOV     DPL,?XSP + 0
    \   00006E   85..83       MOV     DPH,?XSP + 1
@@ -2314,13 +2494,13 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   000080   12....       LCALL   ??printf?relay
    \   000083   7402         MOV     A,#0x2
    \   000085   12....       LCALL   ?DEALLOC_XSTACK8
-    967            int result = AF_DataRequest(&SampleApp_P2P_DstAddr,&SampleApp_epDesc,
-    968                              SAMPLEAPP_P2P_CLUSTERID,
-    969                              Lens+8,
-    970                              FinalSendData,
-    971                              &SampleApp_TransID,
-    972                              AF_DISCV_ROUTE,
-    973                              AF_DEFAULT_RADIUS);
+    995            int result = AF_DataRequest(&SampleApp_P2P_DstAddr,&SampleApp_epDesc,
+    996                                        SAMPLEAPP_P2P_CLUSTERID,
+    997                                        Lens+8,
+    998                                        FinalSendData,
+    999                                        &SampleApp_TransID,
+   1000                                        AF_DISCV_ROUTE,
+   1001                                        AF_DEFAULT_RADIUS);
    \   000088                ; Setup parameters for call to function AF_DataRequest
    \   000088   75..1E       MOV     ?V0 + 2,#0x1e
    \   00008B   78..         MOV     R0,#?V0 + 2
@@ -2351,17 +2531,17 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   0000CA   12....       LCALL   ?DEALLOC_XSTACK8
    \   0000CD   E9           MOV     A,R1
    \   0000CE   F5..         MOV     ?V0 + 0,A
-    974            if(result == afStatus_SUCCESS)
+   1002            if(result == afStatus_SUCCESS)
    \   0000D0   7006         JNZ     ??SampleApp_SendPointToPointMessage_0
-    975            {
-    976              return 0;
+   1003            {
+   1004              return 0;
    \   0000D2   7A00         MOV     R2,#0x0
    \   0000D4   7B00         MOV     R3,#0x0
    \   0000D6   8015         SJMP    ??SampleApp_SendPointToPointMessage_1
-    977            }
-    978            else
-    979            {
-    980              printf("%d",result);
+   1005            }
+   1006            else
+   1007            {
+   1008              printf("%d",result);
    \                     ??SampleApp_SendPointToPointMessage_0:
    \   0000D8                ; Setup parameters for call to function printf
    \   0000D8   78..         MOV     R0,#?V0 + 0
@@ -2371,15 +2551,15 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \   0000E1   12....       LCALL   ??printf?relay
    \   0000E4   7402         MOV     A,#0x2
    \   0000E6   12....       LCALL   ?DEALLOC_XSTACK8
-    981              return result;
+   1009              return result;
    \   0000E9   AA..         MOV     R2,?V0 + 0
    \   0000EB   AB..         MOV     R3,?V0 + 1
    \                     ??SampleApp_SendPointToPointMessage_1:
    \   0000ED   74C8         MOV     A,#-0x38
-    982              // Error occurred in request to send.
-    983            }
+   1010              // Error occurred in request to send.
+   1011            }
    \   0000EF   02....       LJMP    ?Subroutine1 & 0xFFFF
-    984          }
+   1012          }
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for SampleApp_epDesc>`:
@@ -2592,6 +2772,23 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
    \            3000    
 
    \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "switch1,ck">`:
+   \   000000   73776974     DB "switch1,ck"
+   \            6368312C
+   \            636B00  
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "%s%d">`:
+   \   000000   25732564     DB "%s%d"
+   \            00      
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "switch2,ck">`:
+   \   000000   73776974     DB "switch2,ck"
+   \            6368322C
+   \            636B00  
+
+   \                                 In  segment XDATA_ROM_C, align 1
    \                     `?<Constant {0}>_1`:
    \   000000   00           DB 0
    \   000001   00000000     DB 0, 0, 0, 0, 0, 0, 0, 0
@@ -2704,7 +2901,7 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
        -> SampleApp_SendPointToPointMessage
                                         0      0     66
        -> osal_start_timerEx            0      0     58
-     SampleApp_ProcessMSGCmd            2      0    249
+     SampleApp_ProcessMSGCmd            2      0    251
        -> memcpy                        0      0    440
        -> sscanf                        0      0    440
        -> memcpy                        0      0    440
@@ -2714,18 +2911,41 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
        -> printf                        0      0    440
        -> strncmp                       0      0    440
        -> sprintf                       0      0    440
-       -> SampleApp_getIEEEAddr         0      0    436
        -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
        -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
        -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
        -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
+       -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> sprintf                       0      0    444
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
+       -> strstr                        0      0    436
+       -> strlen                        0      0    436
+       -> sprintf                       0      0    444
+       -> strlen                        0      0    436
+       -> SampleApp_SendPointToPointMessage
+                                        0      0    444
      SampleApp_SendPointToPointMessage
-                                        2      0    256
+                                        2      0    445
        -> sprintf                       0      0    440
        -> printf                        0      0    432
        -> AF_DataRequest                0      0    446
        -> printf                        0      0    432
-     SampleApp_getIEEEAddr              1      0    230
+     SampleApp_getIEEEAddr              1      0     41
      debug                              0      0      0
 
 
@@ -2759,23 +2979,25 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
      end_temp                                     1
      end_hum                                      1
      SampleApp_Init                             182
-     ??Subroutine10_0                             6
+     ??Subroutine12_0                             6
      SampleApp_HandleKeys                        79
-     ?Subroutine4                                 2
-     ??Subroutine9_0                             12
+     ?Subroutine3                                 2
+     ??Subroutine11_0                            12
      SampleApp_ProcessEvent                     323
      ?Subroutine0                                 5
      ?Subroutine5                                 7
-     ?Subroutine8                                11
-     SampleApp_ProcessMSGCmd                    738
+     ?Subroutine10                               11
+     SampleApp_ProcessMSGCmd                    890
      ?Subroutine1                                 8
+     ?Subroutine8                                14
+     ?Subroutine7                                23
      ?Subroutine6                                13
-     ?Subroutine3                                 4
+     ?Subroutine4                                 4
      ?Subroutine2                                 8
      SampleApp_CallBack                          24
      debug                                        3
      SampleApp_getIEEEAddr                      111
-     ?Subroutine7                                11
+     ?Subroutine9                                11
      SampleApp_SendPointToPointMessage
                                                 242
      ?<Initializer for SampleApp_epDesc>          6
@@ -2804,24 +3026,27 @@ Warning[Pe167]: argument of type "unsigned char *" is incompatible with
      ?<Constant "switch1,0">                     10
      ?<Constant "switch2,1">                     10
      ?<Constant "switch2,0">                     10
+     ?<Constant "switch1,ck">                    11
+     ?<Constant "%s%d">                           5
+     ?<Constant "switch2,ck">                    11
      ?<Constant {0}>_1                          200
      ?<Constant "%4x%4d%s">                       9
      ?<Constant "FinalSendData:%s\n">            18
      ?<Constant "%d">                             3
 
  
- 1 789 bytes in segment BANKED_CODE
+ 1 978 bytes in segment BANKED_CODE
     48 bytes in segment BANK_RELAYS
      3 bytes in segment SFR_AN
     84 bytes in segment XDATA_I
     84 bytes in segment XDATA_ID
-   569 bytes in segment XDATA_ROM_C
+   596 bytes in segment XDATA_ROM_C
    574 bytes in segment XDATA_Z
  
- 1 921 bytes of CODE  memory
-   569 bytes of CONST memory
+ 2 110 bytes of CODE  memory
+   596 bytes of CONST memory
      0 bytes of DATA  memory (+ 3 bytes shared)
    658 bytes of XDATA memory
 
 Errors: none
-Warnings: 13
+Warnings: 25

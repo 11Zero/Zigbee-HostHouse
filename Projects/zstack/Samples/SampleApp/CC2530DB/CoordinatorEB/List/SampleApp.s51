@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR C/C++ Compiler V8.10.3.10338/W32 for 8051        23/Jan/2022  23:42:34 /
+// IAR C/C++ Compiler V8.10.3.10338/W32 for 8051        07/Feb/2022  23:27:50 /
 // Copyright 2004-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Core               =  plain                                             /
@@ -241,10 +241,10 @@
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
-        LOCFRAME XSTACK, 218, STACK
+        LOCFRAME XSTACK, 220, STACK
         PUBLIC SampleApp_SendPointToPointMessage
         FUNCTION SampleApp_SendPointToPointMessage,021203H
-        ARGFRAME XSTACK, 125, STACK
+        ARGFRAME XSTACK, 220, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
@@ -974,7 +974,7 @@ SampleApp_Group:
         REQUIRE __INIT_XDATA_Z
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  126 uint8 DevicesIEEEAddr[4][17]={{"00124B0006F7E953"},{"00124B0006F78A1F"},{"00124B0006F7EAFD"},{"00124B001FBE1D86"}};
+//  126 uint8 DevicesIEEEAddr[4][17]={"00124B0006F7E953","00124B0006F78A1F","00124B0006F7EAFD","00124B001FBE1D86"};
 DevicesIEEEAddr:
         DATA8
         DS 68
@@ -1324,7 +1324,7 @@ SampleApp_Init:
         LCALL   ??RegisterForKeys?relay
         MOV     A,R1
 //  185   //逢蜂鸣器初始化
-//  186 
+//  186   
 //  187   
 //  188 #ifdef ZDO_COORDINATOR
 //  189   //协调器初始化
@@ -1334,19 +1334,19 @@ SampleApp_Init:
 //  193   //P0_5=1;
 //  194   
 //  195   //初始化发布的主题
-//  196 //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
-//  197   sprintf(topics_post, "/a1sIpEvOQhQ/device/user/transfer");
+//  196   //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
+//  197   sprintf(topics_post, "/a1xaMw4YerO/device/user/transfer");
         ; Setup parameters for call to function sprintf
-        MOV     R4,#`?<Constant "/a1sIpEvOQhQ/device/u...">` & 0xff
-        MOV     R5,#(`?<Constant "/a1sIpEvOQhQ/device/u...">` >> 8) & 0xff
+        MOV     R4,#`?<Constant "/a1xaMw4YerO/device/u...">` & 0xff
+        MOV     R5,#(`?<Constant "/a1xaMw4YerO/device/u...">` >> 8) & 0xff
         MOV     R2,#topics_post & 0xff
         MOV     R3,#(topics_post >> 8) & 0xff
         LCALL   ??sprintf?relay
 //  198   //初始化订阅的主题
-//  199   sprintf(topics_buff, "/a1sIpEvOQhQ/device/user/receive");
+//  199   sprintf(topics_buff, "/a1xaMw4YerO/device/user/receive");
         ; Setup parameters for call to function sprintf
-        MOV     R4,#`?<Constant "/a1sIpEvOQhQ/device/u...">_1` & 0xff
-        MOV     R5,#(`?<Constant "/a1sIpEvOQhQ/device/u...">_1` >> 8) & 0xff
+        MOV     R4,#`?<Constant "/a1xaMw4YerO/device/u...">_1` & 0xff
+        MOV     R5,#(`?<Constant "/a1xaMw4YerO/device/u...">_1` >> 8) & 0xff
         MOV     R2,#topics_buff & 0xff
         MOV     R3,#(topics_buff >> 8) & 0xff
         LCALL   ??sprintf?relay
@@ -1358,7 +1358,7 @@ SampleApp_Init:
         MOV     A,#(topics_buff >> 8) & 0xff
         MOVX    @DPTR,A
 //  201 #else
-//  202     
+//  202   
 //  203   P0SEL &= ~0xa0;                 //设置P05和P07为普通IO口
 //  204   P0DIR |= 0xa0;                 //P05和P07定义为输出口
 //  205 #endif
@@ -1577,11 +1577,11 @@ SampleApp_HandleKeys:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 10)
-//  240 //    const signed char *g_mqtt_topics[] = {"mqtt_topic_test1"};
-//  241 //    if(0 == mqtt_subscribe_topic(g_mqtt_topics, 1))
-//  242 //    {
-//  243 //      
-//  244 //    }
+//  240     //    const signed char *g_mqtt_topics[] = {"mqtt_topic_test1"};
+//  241     //    if(0 == mqtt_subscribe_topic(g_mqtt_topics, 1))
+//  242     //    {
+//  243     //      
+//  244     //    }
 //  245   }
 //  246   
 //  247   if ( keys & HAL_KEY_SW_1 )//key2
@@ -1614,10 +1614,10 @@ SampleApp_HandleKeys:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 10)
-//  250 //    if(0==SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,MqttRecMsg,strlen(MqttRecMsg)))
-//  251 //    {
-//  252 //      memset(MqttRecMsg,0,sizeof(MqttRecMsg));
-//  253 //    }
+//  250     //    if(0==SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,MqttRecMsg,strlen(MqttRecMsg)))
+//  251     //    {
+//  252     //      memset(MqttRecMsg,0,sizeof(MqttRecMsg));
+//  253     //    }
 //  254     if(onenet_login_ok==2)
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
@@ -1905,7 +1905,7 @@ SampleApp_ProcessEvent:
         ARGFRAME XSTACK, 127, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL SampleApp_ProcessEvent, sprintf
+        FUNCALL SampleApp_ProcessEvent, printf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 125, STACK
@@ -2344,7 +2344,7 @@ SampleApp_ProcessEvent:
 //  325         {
 //  326           
 //  327           /////////////////////////////////////
-//  328         #ifdef ZDO_COORDINATOR
+//  328 #ifdef ZDO_COORDINATOR
 //  329           SampleApp_NwkState = (zdoStatus_t)(MSGpkt->hdr.status);
 ??SampleApp_ProcessEvent_5:
         MOV     DPL,?V0 + 0
@@ -2353,10 +2353,10 @@ SampleApp_ProcessEvent:
         MOVX    A,@DPTR
         MOV     DPTR,#SampleApp_NwkState
         MOVX    @DPTR,A
-//  330         #else
+//  330 #else
 //  331           SampleApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
-//  332         #endif
-//  333          ////////////////////////////////////////// 
+//  332 #endif
+//  333           ////////////////////////////////////////// 
 //  334           if ( (SampleApp_NwkState == DEV_ROUTER) || (SampleApp_NwkState == DEV_END_DEVICE) )
         MOV     DPTR,#SampleApp_NwkState
         MOVX    A,@DPTR
@@ -2452,8 +2452,8 @@ SampleApp_ProcessEvent:
         MOV     R1,A
         LCALL   ??osal_start_timerEx?relay
         MOV     A,R1
-//  355       ///////////////////////////////////////////    
-//  356         #ifdef ZDO_COORDINATOR
+//  355           ///////////////////////////////////////////    
+//  356 #ifdef ZDO_COORDINATOR
 //  357           if(!flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT)
         MOV     DPTR,#flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT
         MOVX    A,@DPTR
@@ -2475,14 +2475,14 @@ SampleApp_ProcessEvent:
         MOV     A,#0x1
         MOVX    @DPTR,A
 //  361           }
-//  362         #else
+//  362 #else
 //  363           if(!flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT)
 //  364           {  
 //  365             osal_start_timerEx( SampleApp_TaskID,SAMPLEAPP_ENDDEV_HEART_BEAT_EVT,2000);    //2s后发送一次心跳包到协调器 
 //  366             flag_COOR_CHECK_or_ENDDEV_HEART_BEAT_EVT = true;
 //  367           }
-//  368         #endif
-//  369        //////////////////////////////////////   
+//  368 #endif
+//  369           //////////////////////////////////////   
 //  370           //        }
 //  371           //        else if(SampleApp_NwkState == DEV_ZB_COORD)
 //  372           //        {
@@ -2690,10 +2690,10 @@ SampleApp_ProcessEvent:
 //  457       //    OneNet_SendData(end_temp, end_hum);
 //  458       
 //  459       sprintf(mqtt_message,"{\"flow\":201,\ 
-//  460           \"msg\":{\ 
-//  461                 \"dev1\":%d,\ 
-//  462                   \"dev2\":%d,\ 
-//  463                     \"dev3\":%d,\ 
+//  460         \"msg\":{\ 
+//  461           \"dev1\":%d,\ 
+//  462             \"dev2\":%d,\ 
+//  463               \"dev3\":%d,\ 
 //  464     }}",
 //  465     devicesOnlineStatus[0],
 //  466     devicesOnlineStatus[1],
@@ -2709,8 +2709,8 @@ SampleApp_ProcessEvent:
         MOV     DPTR,#devicesOnlineStatus
         LCALL   ?PUSH_XSTACK8_X_TWO
         CFI CFA_XSP16 add(XSP16, 127)
-        MOV     R4,#`?<Constant "{\\"flow\\":201,         ...">` & 0xff
-        MOV     R5,#(`?<Constant "{\\"flow\\":201,         ...">` >> 8) & 0xff
+        MOV     R4,#`?<Constant "{\\"flow\\":201,        \\"...">` & 0xff
+        MOV     R5,#(`?<Constant "{\\"flow\\":201,        \\"...">` >> 8) & 0xff
         MOV     R2,#mqtt_message & 0xff
         MOV     R3,#(mqtt_message >> 8) & 0xff
         LCALL   ??sprintf?relay
@@ -2858,8 +2858,8 @@ SampleApp_ProcessEvent:
         INC     DPTR
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  491       sprintf(buff,"device%d %d",i,devicesOnlineStatus[i]);
-        ; Setup parameters for call to function sprintf
+//  491       printf("device%d %d\n",i,devicesOnlineStatus[i]);
+        ; Setup parameters for call to function printf
         MOV     R0,?V0 + 0
         MOV     R1,?V0 + 1
         MOV     A,R0
@@ -2887,13 +2887,9 @@ SampleApp_ProcessEvent:
         MOV     R0,#?V0 + 0
         LCALL   ?PUSH_XSTACK_I_TWO
         CFI CFA_XSP16 add(XSP16, 125)
-        MOV     R4,#`?<Constant "device%d %d">` & 0xff
-        MOV     R5,#(`?<Constant "device%d %d">` >> 8) & 0xff
-        MOV     A,#0x47
-        LCALL   ?XSTACK_DISP0_8
-        MOV     R2,DPL
-        MOV     R3,DPH
-        LCALL   ??sprintf?relay
+        MOV     R2,#`?<Constant "device%d %d\\n">` & 0xff
+        MOV     R3,#(`?<Constant "device%d %d\\n">` >> 8) & 0xff
+        LCALL   ??printf?relay
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
@@ -2928,7 +2924,7 @@ SampleApp_ProcessEvent:
         MOV     R3,A
         LJMP    ??SampleApp_ProcessEvent_10 & 0xFFFF
 //  497   }
-//  498 
+//  498   
 //  499   if ( events & SAMPLEAPP_COOR_CHECK_MQTT_EVT )//协调器执行mqtt处理事件
 ??SampleApp_ProcessEvent_18:
         MOV     A,R6
@@ -2936,7 +2932,7 @@ SampleApp_ProcessEvent:
         JNZ     $+5
         LJMP    ??SampleApp_ProcessEvent_21 & 0xFFFF
 //  500   {
-//  501       uint8 pureRecMsg[50] = {0};
+//  501     uint8 pureRecMsg[50] = {0};
         MOV     DPTR,#`?<Constant {0}>_1`
         PUSH    DPL
         CFI CFA_SP SP+-1
@@ -2952,15 +2948,15 @@ SampleApp_ProcessEvent:
         CFI CFA_SP SP+0
         MOV     A,#0x32
         LCALL   ?MOVE_LONG8_XDATA_XDATA
-//  502       if(MqttRecMsg[0]=='\0')//假如数据字符为dev1,switch2,1
+//  502     if(MqttRecMsg[0]=='\0')//假如数据字符为dev1,switch2,1
         MOV     DPTR,#MqttRecMsg
         MOVX    A,@DPTR
         JNZ     $+5
         LJMP    ??SampleApp_ProcessEvent_22 & 0xFFFF
-//  503       {}
-//  504       //else if(strstr(MqttRecMsg,"dev2,")!=NULL)
-//  505       else{
-//  506            printf("MqttRecMsg:%s\n",MqttRecMsg);
+//  503     {}
+//  504     //else if(strstr(MqttRecMsg,"dev2,")!=NULL)
+//  505     else{
+//  506       printf("MqttRecMsg:%s\n",MqttRecMsg);
         ; Setup parameters for call to function printf
         MOV     ?V0 + 0,#MqttRecMsg & 0xff
         MOV     ?V0 + 1,#(MqttRecMsg >> 8) & 0xff
@@ -2973,7 +2969,7 @@ SampleApp_ProcessEvent:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  507            if(strstr(MqttRecMsg,"\"}")!=NULL)
+//  507       if(strstr(MqttRecMsg,"\"}")!=NULL)
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "\\"}">` & 0xff
         MOV     R5,#(`?<Constant "\\"}">` >> 8) & 0xff
@@ -2985,8 +2981,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_23
-//  508            {
-//  509              memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\"}")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
+//  508       {
+//  509         memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\"}")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "\\"}">` & 0xff
         MOV     R5,#(`?<Constant "\\"}">` >> 8) & 0xff
@@ -3047,7 +3043,7 @@ SampleApp_ProcessEvent:
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
         LJMP    ??SampleApp_ProcessEvent_22 & 0xFFFF
-//  510            }else if(strstr(MqttRecMsg,"\",\"flow\"")!=NULL)
+//  510       }else if(strstr(MqttRecMsg,"\",\"flow\"")!=NULL)
 ??SampleApp_ProcessEvent_23:
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "\\",\\"flow\\"">` & 0xff
@@ -3060,8 +3056,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_22
-//  511            {
-//  512              memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\",\"flow\"")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
+//  511       {
+//  512         memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\",\"flow\"")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "\\",\\"flow\\"">` & 0xff
         MOV     R5,#(`?<Constant "\\",\\"flow\\"">` >> 8) & 0xff
@@ -3121,9 +3117,9 @@ SampleApp_ProcessEvent:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  513            }
-//  514          }
-//  515       if(DevicesShortAddr[0]!=-1 && strstr(pureRecMsg,"dev0,")!=NULL)
+//  513       }
+//  514     }
+//  515     if(DevicesShortAddr[0]!=-1 && strstr(pureRecMsg,"dev0,")!=NULL)
 ??SampleApp_ProcessEvent_22:
         MOV     DPTR,#DevicesShortAddr
         MOVX    A,@DPTR
@@ -3147,8 +3143,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_25
-//  516       {
-//  517         SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+//  516     {
+//  517       SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
         ; Setup parameters for call to function strlen
         MOV     DPL,?XSP + 0
         MOV     DPH,?XSP + 1
@@ -3188,13 +3184,13 @@ SampleApp_ProcessEvent:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  518         printf("dev0,");
+//  518       printf("dev0,");
         ; Setup parameters for call to function printf
         MOV     R2,#`?<Constant "dev0,">` & 0xff
         MOV     R3,#(`?<Constant "dev0,">` >> 8) & 0xff
         LCALL   ??printf?relay
         LJMP    ??SampleApp_ProcessEvent_26 & 0xFFFF
-//  519       }else if(DevicesShortAddr[1]!=-1 && strstr(pureRecMsg,"dev1,")!=NULL)
+//  519     }else if(DevicesShortAddr[1]!=-1 && strstr(pureRecMsg,"dev1,")!=NULL)
 ??SampleApp_ProcessEvent_25:
         MOV     DPTR,#DevicesShortAddr + 2
         MOVX    A,@DPTR
@@ -3218,8 +3214,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_28
-//  520       {
-//  521         SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+//  520     {
+//  521       SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
         ; Setup parameters for call to function strlen
         MOV     DPL,?XSP + 0
         MOV     DPH,?XSP + 1
@@ -3259,13 +3255,13 @@ SampleApp_ProcessEvent:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  522         printf("dev1,");
+//  522       printf("dev1,");
         ; Setup parameters for call to function printf
         MOV     R2,#`?<Constant "dev1,">` & 0xff
         MOV     R3,#(`?<Constant "dev1,">` >> 8) & 0xff
         LCALL   ??printf?relay
         LJMP    ??SampleApp_ProcessEvent_26 & 0xFFFF
-//  523       }else if(DevicesShortAddr[2]!=-1 && strstr(pureRecMsg,"dev2,")!=NULL)
+//  523     }else if(DevicesShortAddr[2]!=-1 && strstr(pureRecMsg,"dev2,")!=NULL)
 ??SampleApp_ProcessEvent_28:
         MOV     DPTR,#DevicesShortAddr + 4
         MOVX    A,@DPTR
@@ -3289,8 +3285,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_30
-//  524       {
-//  525         SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+//  524     {
+//  525       SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
         ; Setup parameters for call to function strlen
         MOV     DPL,?XSP + 0
         MOV     DPH,?XSP + 1
@@ -3330,13 +3326,13 @@ SampleApp_ProcessEvent:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  526         printf("dev2,");
+//  526       printf("dev2,");
         ; Setup parameters for call to function printf
         MOV     R2,#`?<Constant "dev2,">` & 0xff
         MOV     R3,#(`?<Constant "dev2,">` >> 8) & 0xff
         LCALL   ??printf?relay
         SJMP    ??SampleApp_ProcessEvent_26
-//  527       }else if(DevicesShortAddr[3]!=-1 && strstr(pureRecMsg,"dev3,")!=NULL)
+//  527     }else if(DevicesShortAddr[3]!=-1 && strstr(pureRecMsg,"dev3,")!=NULL)
 ??SampleApp_ProcessEvent_30:
         MOV     DPTR,#DevicesShortAddr + 6
         MOVX    A,@DPTR
@@ -3360,8 +3356,8 @@ SampleApp_ProcessEvent:
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
         JZ      ??SampleApp_ProcessEvent_26
-//  528       {
-//  529         SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
+//  528     {
+//  529       SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
         ; Setup parameters for call to function strlen
         MOV     DPL,?XSP + 0
         MOV     DPH,?XSP + 1
@@ -3401,13 +3397,13 @@ SampleApp_ProcessEvent:
         MOV     A,#0x4
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 121)
-//  530         printf("dev3,");
+//  530       printf("dev3,");
         ; Setup parameters for call to function printf
         MOV     R2,#`?<Constant "dev3,">` & 0xff
         MOV     R3,#(`?<Constant "dev3,">` >> 8) & 0xff
         LCALL   ??printf?relay
-//  531       }
-//  532       osal_memset(MqttRecMsg, 0, 200);
+//  531     }
+//  532     osal_memset(MqttRecMsg, 0, 200);
 ??SampleApp_ProcessEvent_26:
         ; Setup parameters for call to function osal_memset
         MOV     R4,#-0x38
@@ -3416,7 +3412,7 @@ SampleApp_ProcessEvent:
         MOV     R2,#MqttRecMsg & 0xff
         MOV     R3,#(MqttRecMsg >> 8) & 0xff
         LCALL   ??osal_memset?relay
-//  533 
+//  533     
 //  534     return (events ^ SAMPLEAPP_COOR_CHECK_MQTT_EVT);
         MOV     A,R6
         XRL     A,#0x20
@@ -3620,7 +3616,7 @@ SampleApp_ProcessMSGCmd:
         ARGFRAME XSTACK, 216, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL SampleApp_ProcessMSGCmd, strstr
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 216, STACK
@@ -3629,6 +3625,17 @@ SampleApp_ProcessMSGCmd:
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL SampleApp_ProcessMSGCmd, strstr
@@ -3642,7 +3649,205 @@ SampleApp_ProcessMSGCmd:
         ARGFRAME XSTACK, 216, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL SampleApp_ProcessMSGCmd, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, sprintf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, sprintf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, strlen
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 216, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 216, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, SampleApp_SendPointToPointMessage
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 220, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 220, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL SampleApp_ProcessMSGCmd, Response2mqtt
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 216, STACK
@@ -3934,7 +4139,7 @@ SampleApp_ProcessMSGCmd:
         MOV     DPH,A
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  603 
+//  603       
 //  604       
 //  605       //sprintf(buff, "%s", pkt->cmd.Data);
 //  606       HalLcdWriteString(data, HAL_LCD_LINE_4); //LCD显示
@@ -3982,7 +4187,7 @@ SampleApp_ProcessMSGCmd:
         DATA8
         DATA
         DATA8
-        DB        3
+        DB        4
         DATA
         DATA16
         DATA
@@ -4008,6 +4213,11 @@ SampleApp_ProcessMSGCmd:
         DATA
         DATA16
         DW        ??SampleApp_ProcessMSGCmd_5
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??SampleApp_ProcessMSGCmd_6
         CODE
 //  611       {
 //  612       case 1003://终端向协调器发送IEEE事件，此处自动填写shortAddr映射表DevicesShortAddr，DevicesIEEEAddr
@@ -4016,7 +4226,7 @@ SampleApp_ProcessMSGCmd:
 ??SampleApp_ProcessMSGCmd_4:
         MOV     ?V0 + 0,#0x0
         MOV     ?V0 + 1,#0x0
-??SampleApp_ProcessMSGCmd_6:
+??SampleApp_ProcessMSGCmd_7:
         CLR     C
         MOV     A,?V0 + 0
         SUBB    A,#0x4
@@ -4067,7 +4277,7 @@ SampleApp_ProcessMSGCmd:
         MOV     A,?V0 + 2
         ORL     A,?V0 + 3
         JZ      $+5
-        LJMP    ??SampleApp_ProcessMSGCmd_7 & 0xFFFF
+        LJMP    ??SampleApp_ProcessMSGCmd_8 & 0xFFFF
 //  617             {
 //  618               DevicesShortAddr[i]=pkt->srcAddr.addr.shortAddr;
         MOV     DPL,R6
@@ -4133,7 +4343,7 @@ SampleApp_ProcessMSGCmd:
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
         XRL     A,#0x2
-        JNZ     ??SampleApp_ProcessMSGCmd_8
+        JNZ     ??SampleApp_ProcessMSGCmd_9
 //  625               {
 //  626                 sprintf(mqtt_message, "{\"flow\":201,\"msg\":\"%s Linked\"}",DevicesIEEEAddr[i]);
         ; Setup parameters for call to function sprintf
@@ -4168,7 +4378,7 @@ SampleApp_ProcessMSGCmd:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 216)
-//  627               OneNet_publish_topic(topics_post, mqtt_message);
+//  627                 OneNet_publish_topic(topics_post, mqtt_message);
         ; Setup parameters for call to function OneNet_publish_topic
         MOV     R4,#mqtt_message & 0xff
         MOV     R5,#(mqtt_message >> 8) & 0xff
@@ -4179,19 +4389,19 @@ SampleApp_ProcessMSGCmd:
 //  628               }
 //  629 #endif
 //  630               break;
-        SJMP    ??SampleApp_ProcessMSGCmd_8
+        SJMP    ??SampleApp_ProcessMSGCmd_9
 //  631             }
 //  632           }
-??SampleApp_ProcessMSGCmd_7:
+??SampleApp_ProcessMSGCmd_8:
         MOV     A,?V0 + 0
         ADD     A,#0x1
         MOV     ?V0 + 0,A
         MOV     A,?V0 + 1
         ADDC    A,#0x0
         MOV     ?V0 + 1,A
-        LJMP    ??SampleApp_ProcessMSGCmd_6 & 0xFFFF
+        LJMP    ??SampleApp_ProcessMSGCmd_7 & 0xFFFF
 //  633         }break;
-??SampleApp_ProcessMSGCmd_8:
+??SampleApp_ProcessMSGCmd_9:
         LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
 //  634       case 1001://心跳包数据事件
 //  635         {
@@ -4199,13 +4409,13 @@ SampleApp_ProcessMSGCmd:
 ??SampleApp_ProcessMSGCmd_3:
         MOV     R0,#0x0
         MOV     R1,#0x0
-??SampleApp_ProcessMSGCmd_9:
+??SampleApp_ProcessMSGCmd_10:
         CLR     C
         MOV     A,R0
         SUBB    A,#0x4
         MOV     A,R1
         SUBB    A,#0x0
-        JNC     ??SampleApp_ProcessMSGCmd_10
+        JNC     ??SampleApp_ProcessMSGCmd_11
 //  637           {
 //  638             if(pkt->srcAddr.addr.shortAddr == DevicesShortAddr[i])
         MOV     DPL,R6
@@ -4247,12 +4457,12 @@ SampleApp_ProcessMSGCmd:
         MOV     DPH,A
         MOVX    A,@DPTR
         XRL     A,R4
-        JNZ     ??SampleApp_ProcessMSGCmd_11
+        JNZ     ??SampleApp_ProcessMSGCmd_12
         INC     DPTR
         MOVX    A,@DPTR
         XRL     A,R5
-??SampleApp_ProcessMSGCmd_11:
-        JNZ     ??SampleApp_ProcessMSGCmd_12
+??SampleApp_ProcessMSGCmd_12:
+        JNZ     ??SampleApp_ProcessMSGCmd_13
 //  639             {
 //  640               devicesOnline[i]=1;//发现心跳终端来信，即设置对应在线状态为在线
         MOV     A,R0
@@ -4281,21 +4491,21 @@ SampleApp_ProcessMSGCmd:
         MOV     A,#0x0
         MOVX    @DPTR,A
 //  641               break;
-        SJMP    ??SampleApp_ProcessMSGCmd_10
+        SJMP    ??SampleApp_ProcessMSGCmd_11
 //  642             }
 //  643           }
-??SampleApp_ProcessMSGCmd_12:
+??SampleApp_ProcessMSGCmd_13:
         MOV     A,R0
         ADD     A,#0x1
         MOV     R0,A
         MOV     A,R1
         ADDC    A,#0x0
         MOV     R1,A
-        SJMP    ??SampleApp_ProcessMSGCmd_9
+        SJMP    ??SampleApp_ProcessMSGCmd_10
 //  644           
 //  645         }break;
-??SampleApp_ProcessMSGCmd_10:
-        SJMP    ??SampleApp_ProcessMSGCmd_2
+??SampleApp_ProcessMSGCmd_11:
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
 //  646       case 1002://协调器向终端发送按键消息
 //  647         {
 //  648           
@@ -4316,14 +4526,42 @@ SampleApp_ProcessMSGCmd:
         MOV     ?V0 + 1,R3
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
-        JZ      ??SampleApp_ProcessMSGCmd_13
+        JZ      ??SampleApp_ProcessMSGCmd_14
 //  653           {
 //  654             P0_5 = 1;
         SETB    0x80.5
-        SJMP    ??SampleApp_ProcessMSGCmd_2
-//  655           }
-//  656           else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
-??SampleApp_ProcessMSGCmd_13:
+//  655             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  656           }
+//  657           else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
+??SampleApp_ProcessMSGCmd_14:
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "switch1,0">` & 0xff
         MOV     R5,#(`?<Constant "switch1,0">` >> 8) & 0xff
@@ -4336,14 +4574,42 @@ SampleApp_ProcessMSGCmd:
         MOV     ?V0 + 1,R3
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
-        JZ      ??SampleApp_ProcessMSGCmd_14
-//  657           {
-//  658             P0_5 = 0;
+        JZ      ??SampleApp_ProcessMSGCmd_15
+//  658           {
+//  659             P0_5 = 0;
         CLR     0x80.5
-        SJMP    ??SampleApp_ProcessMSGCmd_2
-//  659           }
-//  660           else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
-??SampleApp_ProcessMSGCmd_14:
+//  660             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  661           }
+//  662           else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
+??SampleApp_ProcessMSGCmd_15:
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "switch2,1">` & 0xff
         MOV     R5,#(`?<Constant "switch2,1">` >> 8) & 0xff
@@ -4356,14 +4622,42 @@ SampleApp_ProcessMSGCmd:
         MOV     ?V0 + 1,R3
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
-        JZ      ??SampleApp_ProcessMSGCmd_15
-//  661           {
-//  662             P0_7 = 1;
+        JZ      ??SampleApp_ProcessMSGCmd_16
+//  663           {
+//  664             P0_7 = 1;
         SETB    0x80.7
-        SJMP    ??SampleApp_ProcessMSGCmd_2
-//  663           }
-//  664           else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
-??SampleApp_ProcessMSGCmd_15:
+//  665             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  666           }
+//  667           else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
+??SampleApp_ProcessMSGCmd_16:
         ; Setup parameters for call to function strstr
         MOV     R4,#`?<Constant "switch2,0">` & 0xff
         MOV     R5,#(`?<Constant "switch2,0">` >> 8) & 0xff
@@ -4376,29 +4670,279 @@ SampleApp_ProcessMSGCmd:
         MOV     ?V0 + 1,R3
         MOV     A,?V0 + 0
         ORL     A,?V0 + 1
-        JZ      ??SampleApp_ProcessMSGCmd_2
-//  665           {
-//  666             P0_7 = 0;
+        JZ      ??SampleApp_ProcessMSGCmd_17
+//  668           {
+//  669             P0_7 = 0;
         CLR     0x80.7
-//  667           }
-//  668         }break;
-//  669       }
-//  670 #ifdef ZDO_COORDINATOR
-//  671       if(onenet_login_ok==3)
+//  670             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  671           }
+//  672           
+//  673           else if(NULL!=strstr(data,"switch1,ck"))//判断消息查询开关switch1命令
+??SampleApp_ProcessMSGCmd_17:
+        ; Setup parameters for call to function strstr
+        MOV     R4,#`?<Constant "switch1,ck">` & 0xff
+        MOV     R5,#(`?<Constant "switch1,ck">` >> 8) & 0xff
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strstr?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     A,?V0 + 0
+        ORL     A,?V0 + 1
+        JNZ     $+5
+        LJMP    ??SampleApp_ProcessMSGCmd_18 & 0xFFFF
+//  674           {
+//  675             data[strlen(data)-2]='\0';
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     A,DPL
+        ADD     A,?V0 + 0
+        MOV     R0,A
+        MOV     A,DPH
+        ADDC    A,?V0 + 1
+        MOV     R1,A
+        MOV     A,R0
+        ADD     A,#-0x2
+        MOV     DPL,A
+        MOV     A,R1
+        ADDC    A,#-0x1
+        MOV     DPH,A
+        MOV     A,#0x0
+        MOVX    @DPTR,A
+//  676             sprintf(data,"%s%d",data,P0_5);
+        ; Setup parameters for call to function sprintf
+        MOV     C,0x80.5
+        CLR     A
+        RLC     A
+        MOV     ?V0 + 0,A
+        MOV     ?V0 + 1,#0x0
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#`?<Constant "%s%d">` & 0xff
+        MOV     R5,#(`?<Constant "%s%d">` >> 8) & 0xff
+        MOV     A,#0x8
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??sprintf?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+//  677             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  678           }
+//  679           else if(NULL!=strstr(data,"switch2,ck"))//判断消息查询开关switch2命令
+??SampleApp_ProcessMSGCmd_18:
+        ; Setup parameters for call to function strstr
+        MOV     R4,#`?<Constant "switch2,ck">` & 0xff
+        MOV     R5,#(`?<Constant "switch2,ck">` >> 8) & 0xff
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strstr?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     A,?V0 + 0
+        ORL     A,?V0 + 1
+        JNZ     $+5
+        LJMP    ??SampleApp_ProcessMSGCmd_2 & 0xFFFF
+//  680           {
+//  681             data[strlen(data)-2]='\0';
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     A,DPL
+        ADD     A,?V0 + 0
+        MOV     R0,A
+        MOV     A,DPH
+        ADDC    A,?V0 + 1
+        MOV     R1,A
+        MOV     A,R0
+        ADD     A,#-0x2
+        MOV     DPL,A
+        MOV     A,R1
+        ADDC    A,#-0x1
+        MOV     DPH,A
+        MOV     A,#0x0
+        MOVX    @DPTR,A
+//  682             sprintf(data,"%s%d",data,P0_7);
+        ; Setup parameters for call to function sprintf
+        MOV     C,0x80.7
+        CLR     A
+        RLC     A
+        MOV     ?V0 + 0,A
+        MOV     ?V0 + 1,#0x0
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#`?<Constant "%s%d">` & 0xff
+        MOV     R5,#(`?<Constant "%s%d">` >> 8) & 0xff
+        MOV     A,#0x8
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??sprintf?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+//  683             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+        ; Setup parameters for call to function SampleApp_SendPointToPointMessage
+        ; Setup parameters for call to function strlen
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??strlen?relay
+        MOV     ?V0 + 0,R2
+        MOV     ?V0 + 1,R3
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 218)
+        MOV     A,#0x6
+        LCALL   ?XSTACK_DISP0_8
+        MOV     ?V0 + 0,DPL
+        MOV     ?V0 + 1,DPH
+        MOV     R0,#?V0 + 0
+        LCALL   ?PUSH_XSTACK_I_TWO
+        CFI CFA_XSP16 add(XSP16, 220)
+        MOV     R4,#0x5
+        MOV     R5,#0x10
+        MOV     R2,#0x0
+        MOV     R3,#0x0
+        LCALL   ??SampleApp_SendPointToPointMessage?relay
+        MOV     A,#0x4
+        LCALL   ?DEALLOC_XSTACK8
+        CFI CFA_XSP16 add(XSP16, 216)
+//  684           }
+//  685         }break;
+        SJMP    ??SampleApp_ProcessMSGCmd_2
+//  686       case 1005://协调器收到终端向反馈的查询结果  data = "dev2,switch1,0",立即发送给服务器
+//  687         {
+//  688           //todo
+//  689           //查询结果消息为{"msg":"dev2,switch1,0","flow":201}
+//  690           #ifdef ZDO_COORDINATOR
+//  691           if(onenet_login_ok==2)
+??SampleApp_ProcessMSGCmd_6:
+        MOV     DPTR,#onenet_login_ok
+        MOVX    A,@DPTR
+        XRL     A,#0x2
+        JNZ     ??SampleApp_ProcessMSGCmd_2
+//  692           {
+//  693             Response2mqtt(data);
+        ; Setup parameters for call to function Response2mqtt
+        MOV     A,#0x4
+        LCALL   ?XSTACK_DISP0_8
+        MOV     R2,DPL
+        MOV     R3,DPH
+        LCALL   ??Response2mqtt?relay
+//  694           }
+//  695           #endif
+//  696         }break;
+//  697       }
+//  698 #ifdef ZDO_COORDINATOR
+//  699       if(onenet_login_ok==3)
 ??SampleApp_ProcessMSGCmd_2:
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
         XRL     A,#0x3
         JNZ     ??SampleApp_ProcessMSGCmd_0
-//  672       {
-//  673         //发送温湿度数据到onenet
-//  674         //    OneNet_SendData(end_temp, end_hum);
-//  675         
-//  676         sprintf(mqtt_message, 
-//  677                 "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\ 
-//  678                   \"code\":\"%s\"\ 
-//  679       },\"version\":\"1.0.0\"}",
-//  680       data);
+//  700       {
+//  701         //发送温湿度数据到onenet
+//  702         //    OneNet_SendData(end_temp, end_hum);
+//  703         
+//  704         sprintf(mqtt_message, 
+//  705                 "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\ 
+//  706                   \"code\":\"%s\"\ 
+//  707       },\"version\":\"1.0.0\"}",
+//  708       data);
         ; Setup parameters for call to function sprintf
         MOV     A,#0x4
         LCALL   ?XSTACK_DISP0_8
@@ -4415,21 +4959,21 @@ SampleApp_ProcessMSGCmd:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 216)
-//  681       //mqtt_publish_topic(topics_post, mqtt_message);
-//  682       
-//  683       //  OneNet_publish_topic();
-//  684       }
-//  685 #endif
-//  686     }break;
-//  687     
-//  688   case SAMPLEAPP_PERIODIC_CLUSTERID:
-//  689     
-//  690     break;
-//  691     
-//  692   default:
-//  693     break;
-//  694   }
-//  695 }
+//  709       //mqtt_publish_topic(topics_post, mqtt_message);
+//  710       
+//  711       //  OneNet_publish_topic();
+//  712       }
+//  713 #endif
+//  714     }break;
+//  715     
+//  716   case SAMPLEAPP_PERIODIC_CLUSTERID:
+//  717     
+//  718     break;
+//  719     
+//  720   default:
+//  721     break;
+//  722   }
+//  723 }
 ??SampleApp_ProcessMSGCmd_0:
         MOV     A,#-0x34
         LCALL   ?DEALLOC_XSTACK8
@@ -4438,18 +4982,18 @@ SampleApp_ProcessMSGCmd:
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock3
         REQUIRE _A_P0
-//  696 
-//  697 #ifdef ZDO_COORDINATOR
-//  698 
-//  699 //发送MQTT数据
+//  724 
+//  725 #ifdef ZDO_COORDINATOR
+//  726 
+//  727 //发送MQTT数据
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  700 void ESP8266_SendData(char* buff, int len)
+//  728 void ESP8266_SendData(char* buff, int len)
 ESP8266_SendData:
         CFI Block cfiBlock4 Using cfiCommon0
         CFI Function ESP8266_SendData
         CODE
-//  701 {
+//  729 {
         FUNCALL ESP8266_SendData, HalUARTWrite
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -4483,12 +5027,12 @@ ESP8266_SendData:
         MOV     R6,A
         MOV     A,R5
         MOV     R7,A
-//  702   if(len==0) return;
+//  730   if(len==0) return;
         MOV     A,R6
         ORL     A,R7
         JZ      ??ESP8266_SendData_0
-//  703   
-//  704   HalUARTWrite(0,buff, len);
+//  731   
+//  732   HalUARTWrite(0,buff, len);
         ; Setup parameters for call to function HalUARTWrite
         MOV     A,R6
         MOV     R4,A
@@ -4498,24 +5042,24 @@ ESP8266_SendData:
         MOV     R3,?V0 + 1
         MOV     R1,#0x0
         LCALL   ??HalUARTWrite?relay
-//  705 }
+//  733 }
 ??ESP8266_SendData_0:
         MOV     R7,#0x2
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock4
-//  706 
-//  707 
-//  708 //接收到下发命令，或者接收到订阅的消息
-//  709 //topic:收到的主题
-//  710 //cmd::主题对应的内容
+//  734 
+//  735 
+//  736 //接收到下发命令，或者接收到订阅的消息
+//  737 //topic:收到的主题
+//  738 //cmd::主题对应的内容
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  711 void mqtt_rx(uint8* topic, uint8* cmd)
+//  739 void mqtt_rx(uint8* topic, uint8* cmd)
 mqtt_rx:
         CFI Block cfiBlock5 Using cfiCommon0
         CFI Function mqtt_rx
         CODE
-//  712 {
+//  740 {
         FUNCALL mqtt_rx, HalLcdWriteString
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -4698,28 +5242,28 @@ mqtt_rx:
         MOV     ?V0 + 3,R3
         MOV     ?V0 + 0,R4
         MOV     ?V0 + 1,R5
-//  713   
-//  714   /*
-//  715   /a1xaMw4YerO/device/user/receive
-//  716   {
-//  717 "msg":"balabala",
-//  718   "flow":201  //201表示数据流转方向为设备2流向设备1
-//  719 }
-//  720   */
-//  721   
-//  722    HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
+//  741   
+//  742   /*
+//  743   /a1xaMw4YerO/device/user/receive
+//  744   {
+//  745   "msg":"balabala",
+//  746   "flow":201  //201表示数据流转方向为设备2流向设备1
+//  747 }
+//  748   */
+//  749   
+//  750   HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
         ; Setup parameters for call to function HalLcdWriteString
         MOV     R1,#0x1
         MOV     R2,?V0 + 2
         MOV     R3,?V0 + 3
         LCALL   ??HalLcdWriteString?relay
-//  723   HalLcdWriteString((char*)cmd, HAL_LCD_LINE_2); //LCD显示
+//  751   HalLcdWriteString((char*)cmd, HAL_LCD_LINE_2); //LCD显示
         ; Setup parameters for call to function HalLcdWriteString
         MOV     R1,#0x2
         MOV     R2,?V0 + 0
         MOV     R3,?V0 + 1
         LCALL   ??HalLcdWriteString?relay
-//  724   if(topic == NULL || cmd==NULL) return;
+//  752   if(topic == NULL || cmd==NULL) return;
         MOV     A,?V0 + 2
         ORL     A,?V0 + 3
         JZ      ??mqtt_rx_0
@@ -4728,7 +5272,7 @@ mqtt_rx:
         JNZ     ??mqtt_rx_1
 ??mqtt_rx_0:
         LJMP    ??mqtt_rx_2 & 0xFFFF
-//  725   uint8 buff[100]={0};
+//  753   uint8 buff[100]={0};
 ??mqtt_rx_1:
         MOV     DPTR,#`?<Constant {0}>_3`
         PUSH    DPL
@@ -4745,7 +5289,7 @@ mqtt_rx:
         CFI CFA_SP SP+0
         MOV     A,#0x64
         LCALL   ?MOVE_LONG8_XDATA_XDATA
-//  726   uint8 method[100]={0};
+//  754   uint8 method[100]={0};
         MOV     DPTR,#`?<Constant {0}>_4`
         PUSH    DPL
         CFI CFA_SP SP+-1
@@ -4761,7 +5305,7 @@ mqtt_rx:
         CFI CFA_SP SP+0
         MOV     A,#0x64
         LCALL   ?MOVE_LONG8_XDATA_XDATA
-//  727   uint8 msg[100]={0};
+//  755   uint8 msg[100]={0};
         MOV     DPTR,#`?<Constant {0}>_5`
         PUSH    DPL
         CFI CFA_SP SP+-1
@@ -4777,10 +5321,10 @@ mqtt_rx:
         CFI CFA_SP SP+0
         MOV     A,#0x64
         LCALL   ?MOVE_LONG8_XDATA_XDATA
-//  728   uint8* p_buff = NULL;
+//  756   uint8* p_buff = NULL;
         MOV     R6,#0x0
         MOV     R7,#0x0
-//  729   memcpy(buff,topic,strlen(topic)+1);
+//  757   memcpy(buff,topic,strlen(topic)+1);
         ; Setup parameters for call to function memcpy
         ; Setup parameters for call to function strlen
         MOV     R2,?V0 + 2
@@ -4807,7 +5351,7 @@ mqtt_rx:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 314)
-//  730   p_buff = strrchr(buff,'/')+1;
+//  758   p_buff = strrchr(buff,'/')+1;
         ; Setup parameters for call to function strrchr
         MOV     R4,#0x2f
         MOV     R5,#0x0
@@ -4821,7 +5365,7 @@ mqtt_rx:
         INC     DPTR
         MOV     R6,DPL
         MOV     R7,DPH
-//  731   memcpy(method,p_buff,strlen(p_buff)+1);
+//  759   memcpy(method,p_buff,strlen(p_buff)+1);
         ; Setup parameters for call to function memcpy
         ; Setup parameters for call to function strlen
         MOV     A,R6
@@ -4852,9 +5396,9 @@ mqtt_rx:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 314)
-//  732 
-//  733   
-//  734   if(0==strcmp(method,"receive"))
+//  760   
+//  761   
+//  762   if(0==strcmp(method,"receive"))
         ; Setup parameters for call to function strcmp
         MOV     R4,#`?<Constant "receive">` & 0xff
         MOV     R5,#(`?<Constant "receive">` >> 8) & 0xff
@@ -4868,17 +5412,17 @@ mqtt_rx:
         MOV     A,?V0 + 4
         ORL     A,?V0 + 5
         JNZ     ??mqtt_rx_2
-//  735   {
-//  736 //          memcpy(MqttRecMsg,cmd,strlen(cmd));  
-//  737 //          osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,1000);
-//  738 //          //不知道啥原因，一旦发送消息触发SAMPLEAPP_COOR_CHECK_MQTT_EVT事件，似乎协调器就会死机无法继续发送消息至终端，按键事件也无法发送
-//  739 //          HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
-//  740     if(MqttRecMsg[0]=='\0')
+//  763   {
+//  764     //          memcpy(MqttRecMsg,cmd,strlen(cmd));  
+//  765     //          osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,1000);
+//  766     //          //不知道啥原因，一旦发送消息触发SAMPLEAPP_COOR_CHECK_MQTT_EVT事件，似乎协调器就会死机无法继续发送消息至终端，按键事件也无法发送
+//  767     //          HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
+//  768     if(MqttRecMsg[0]=='\0')
         MOV     DPTR,#MqttRecMsg
         MOVX    A,@DPTR
         JNZ     ??mqtt_rx_3
-//  741         {
-//  742           memcpy(MqttRecMsg,cmd,strlen(cmd));  
+//  769     {
+//  770       memcpy(MqttRecMsg,cmd,strlen(cmd));  
         ; Setup parameters for call to function memcpy
         ; Setup parameters for call to function strlen
         MOV     R2,?V0 + 0
@@ -4897,7 +5441,7 @@ mqtt_rx:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 314)
-//  743           osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,10 );
+//  771       osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,10 );
         ; Setup parameters for call to function osal_start_timerEx
         MOV     R4,#0xa
         MOV     R5,#0x0
@@ -4908,36 +5452,36 @@ mqtt_rx:
         MOV     R1,A
         LCALL   ??osal_start_timerEx?relay
         MOV     A,R1
-//  744           HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
+//  772       HalLcdWriteString((char*)MqttRecMsg, HAL_LCD_LINE_3);
         ; Setup parameters for call to function HalLcdWriteString
         MOV     R1,#0x3
         MOV     R2,#MqttRecMsg & 0xff
         MOV     R3,#(MqttRecMsg >> 8) & 0xff
         LCALL   ??HalLcdWriteString?relay
         SJMP    ??mqtt_rx_2
-//  745         }
-//  746         else{
-//  747           //osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,5 );
-//  748         Response2mqtt("too many msg, hold on");
+//  773     }
+//  774     else{
+//  775       //osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,5 );
+//  776       Response2mqtt("too many msg, hold on");
 ??mqtt_rx_3:
         ; Setup parameters for call to function Response2mqtt
         MOV     R2,#`?<Constant "too many msg, hold on">` & 0xff
         MOV     R3,#(`?<Constant "too many msg, hold on">` >> 8) & 0xff
         LCALL   ??Response2mqtt?relay
-//  749         HalLcdWriteString("too many msg", HAL_LCD_LINE_4);
+//  777       HalLcdWriteString("too many msg", HAL_LCD_LINE_4);
         ; Setup parameters for call to function HalLcdWriteString
         MOV     R1,#0x4
         MOV     R2,#`?<Constant "too many msg">` & 0xff
         MOV     R3,#(`?<Constant "too many msg">` >> 8) & 0xff
         LCALL   ??HalLcdWriteString?relay
-//  750         }
-//  751   }
-//  752  
-//  753 
-//  754   //HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
-//  755   //HalLcdWriteString((char*)msg, HAL_LCD_LINE_2); //LCD显示
-//  756 
-//  757 }
+//  778     }
+//  779   }
+//  780   
+//  781   
+//  782   //HalLcdWriteString((char*)topic, HAL_LCD_LINE_1); //LCD显示
+//  783   //HalLcdWriteString((char*)msg, HAL_LCD_LINE_2); //LCD显示
+//  784   
+//  785 }
 ??mqtt_rx_2:
         MOV     B.0,C
         MOV     DPL,#0x2c
@@ -4948,16 +5492,16 @@ mqtt_rx:
         MOV     R7,#0x6
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock5
-//  758 
-//  759 
+//  786 
+//  787 
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  760 void Response2mqtt(uint8* returnMsg)
+//  788 void Response2mqtt(uint8* returnMsg)
 Response2mqtt:
         CFI Block cfiBlock6 Using cfiCommon0
         CFI Function Response2mqtt
         CODE
-//  761 {
+//  789 {
         FUNCALL Response2mqtt, sprintf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -4998,7 +5542,7 @@ Response2mqtt:
         ; Auto size: 0
         MOV     ?V0 + 0,R2
         MOV     ?V0 + 1,R3
-//  762     sprintf(mqtt_message,"{\"msg\":\"%s\",\"flow\":201}",returnMsg);  
+//  790   sprintf(mqtt_message,"{\"msg\":\"%s\",\"flow\":201}",returnMsg);  
         ; Setup parameters for call to function sprintf
         MOV     R0,#?V0 + 0
         LCALL   ?PUSH_XSTACK_I_TWO
@@ -5011,29 +5555,29 @@ Response2mqtt:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 10)
-//  763         
-//  764       //发布主题
-//  765       mqtt_publish_topic(topics_post, mqtt_message);
+//  791   
+//  792   //发布主题
+//  793   mqtt_publish_topic(topics_post, mqtt_message);
         ; Setup parameters for call to function mqtt_publish_topic
         MOV     R4,#mqtt_message & 0xff
         MOV     R5,#(mqtt_message >> 8) & 0xff
         MOV     R2,#topics_post & 0xff
         MOV     R3,#(topics_post >> 8) & 0xff
         LCALL   ??mqtt_publish_topic?relay
-//  766       
-//  767 }
+//  794   
+//  795 }
         MOV     R7,#0x2
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock6
-//  768 
+//  796 
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  769 bool OneNet_publish_topic(const char *topic, const char *msg)
+//  797 bool OneNet_publish_topic(const char *topic, const char *msg)
 OneNet_publish_topic:
         CFI Block cfiBlock7 Using cfiCommon0
         CFI Function OneNet_publish_topic
         CODE
-//  770 { 
+//  798 { 
         FUNCALL OneNet_publish_topic, mqtt_publish_topic
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -5067,12 +5611,12 @@ OneNet_publish_topic:
         MOV     R6,A
         MOV     A,R5
         MOV     R7,A
-//  771   //uint8 buff[100]={0};
-//  772   
-//  773   //sprintf(buff, "topic:%s,msg:%s", topic, msg);
-//  774   
-//  775   /*  发布主题为"hello_topic_public"，消息为温度和湿度 */
-//  776   return mqtt_publish_topic(topic, msg);
+//  799   //uint8 buff[100]={0};
+//  800   
+//  801   //sprintf(buff, "topic:%s,msg:%s", topic, msg);
+//  802   
+//  803   /*  发布主题为"hello_topic_public"，消息为温度和湿度 */
+//  804   return mqtt_publish_topic(topic, msg);
         ; Setup parameters for call to function mqtt_publish_topic
         MOV     A,R6
         MOV     R4,A
@@ -5087,35 +5631,35 @@ OneNet_publish_topic:
         MOV     R7,#0x2
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock7
-//  777 }
-//  778 
-//  779 
-//  780 
-//  781 /*********************************************************************
-//  782 * @fn      SampleApp_CallBack
-//  783 *
-//  784 * @brief   Send data OTA.
-//  785 *
-//  786 * @param   port - UART port.
-//  787 * @param   event - the UART port event flag.
-//  788 *
-//  789 * @return  none
-//  790 */
+//  805 }
+//  806 
+//  807 
+//  808 
+//  809 /*********************************************************************
+//  810 * @fn      SampleApp_CallBack
+//  811 *
+//  812 * @brief   Send data OTA.
+//  813 *
+//  814 * @param   port - UART port.
+//  815 * @param   event - the UART port event flag.
+//  816 *
+//  817 * @return  none
+//  818 */
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA32
-//  791 uint32 lastReadMs=0;
+//  819 uint32 lastReadMs=0;
 lastReadMs:
         DS 4
         REQUIRE __INIT_XDATA_Z
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  792 void SampleApp_CallBack(uint8 port, uint8 event)
+//  820 void SampleApp_CallBack(uint8 port, uint8 event)
 SampleApp_CallBack:
         CFI Block cfiBlock8 Using cfiCommon0
         CFI Function SampleApp_CallBack
         CODE
-//  793 {
+//  821 {
         FUNCALL SampleApp_CallBack, HalUARTRead
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -5285,14 +5829,14 @@ SampleApp_CallBack:
         MOV     R7,A
         MOV     A,R2
         MOV     R6,A
-//  794   (void)port;
-//  795   
-//  796   if(0==onenet_login_ok)
+//  822   (void)port;
+//  823   
+//  824   if(0==onenet_login_ok)
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
         JNZ     ??SampleApp_CallBack_0
-//  797   {
-//  798     HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
+//  825   {
+//  826     HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
         ; Setup parameters for call to function HalUARTRead
         MOV     R4,#0x2c
         MOV     R5,#0x1
@@ -5300,14 +5844,14 @@ SampleApp_CallBack:
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         MOV     R1,#0x0
         LCALL   ??HalUARTRead?relay
-//  799     SampleApp_RxLen=0;
+//  827     SampleApp_RxLen=0;
         MOV     DPTR,#SampleApp_RxLen
         MOV     A,#0x0
         MOVX    @DPTR,A
         INC     DPTR
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  800     osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX);
+//  828     osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX);
         ; Setup parameters for call to function osal_memset
         MOV     R4,#0x2c
         MOV     R5,#0x1
@@ -5316,17 +5860,17 @@ SampleApp_CallBack:
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         LCALL   ??osal_memset?relay
         LJMP    ??SampleApp_CallBack_1 & 0xFFFF
-//  801   }
-//  802   else if(1==onenet_login_ok)//onenet注册成功 0:未注册，1：注册中　2：注册成功
+//  829   }
+//  830   else if(1==onenet_login_ok)//onenet注册成功 0:未注册，1：注册中　2：注册成功
 ??SampleApp_CallBack_0:
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
         XRL     A,#0x1
         JZ      $+5
         LJMP    ??SampleApp_CallBack_2 & 0xFFFF
-//  803   {
-//  804     //一个一个字节读
-//  805     SampleApp_RxLen += HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf+SampleApp_RxLen, 4);
+//  831   {
+//  832     //一个一个字节读
+//  833     SampleApp_RxLen += HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf+SampleApp_RxLen, 4);
         ; Setup parameters for call to function HalUARTRead
         MOV     R4,#0x4
         MOV     R5,#0x0
@@ -5352,9 +5896,9 @@ SampleApp_CallBack:
         MOVX    A,@DPTR
         ADDC    A,R1
         MOVX    @DPTR,A
-//  806     
-//  807     //判断是否是注册成功
-//  808     if(SampleApp_RxLen>=4)
+//  834     
+//  835     //判断是否是注册成功
+//  836     if(SampleApp_RxLen>=4)
         MOV     DPTR,#SampleApp_RxLen
         CLR     C
         MOVX    A,@DPTR
@@ -5363,8 +5907,8 @@ SampleApp_CallBack:
         MOVX    A,@DPTR
         SUBB    A,#0x0
         JC      ??SampleApp_CallBack_3
-//  809     {
-//  810       debug("rx len=%d(%x,%x,%x,%x)\r\n", SampleApp_RxLen,SampleApp_RxBuf[0],SampleApp_RxBuf[1],SampleApp_RxBuf[2],SampleApp_RxBuf[3]);
+//  837     {
+//  838       debug("rx len=%d(%x,%x,%x,%x)\r\n", SampleApp_RxLen,SampleApp_RxBuf[0],SampleApp_RxBuf[1],SampleApp_RxBuf[2],SampleApp_RxBuf[3]);
         ; Setup parameters for call to function debug
         MOV     DPTR,#SampleApp_RxBuf + 3
         MOVX    A,@DPTR
@@ -5403,9 +5947,9 @@ SampleApp_CallBack:
         MOV     A,#0xa
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 16)
-//  811       
-//  812       //等待接入响应
-//  813       if(MQTT_UnPacketRecv(SampleApp_RxBuf) == MQTT_PKT_CONNACK)
+//  839       
+//  840       //等待接入响应
+//  841       if(MQTT_UnPacketRecv(SampleApp_RxBuf) == MQTT_PKT_CONNACK)
         ; Setup parameters for call to function MQTT_UnPacketRecv
         MOV     R2,#SampleApp_RxBuf & 0xff
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
@@ -5413,40 +5957,40 @@ SampleApp_CallBack:
         MOV     A,R1
         XRL     A,#0x2
         JNZ     ??SampleApp_CallBack_3
-//  814       {
-//  815         if(0==MQTT_UnPacketConnectAck(SampleApp_RxBuf))
+//  842       {
+//  843         if(0==MQTT_UnPacketConnectAck(SampleApp_RxBuf))
         ; Setup parameters for call to function MQTT_UnPacketConnectAck
         MOV     R2,#SampleApp_RxBuf & 0xff
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         LCALL   ??MQTT_UnPacketConnectAck?relay
         MOV     A,R1
         JNZ     ??SampleApp_CallBack_3
-//  816         {
-//  817           onenet_login_ok=2;//注册成功
+//  844         {
+//  845           onenet_login_ok=2;//注册成功
         MOV     DPTR,#onenet_login_ok
         MOV     A,#0x2
         MOVX    @DPTR,A
-//  818           SampleApp_RxLen=0;
+//  846           SampleApp_RxLen=0;
         MOV     DPTR,#SampleApp_RxLen
         MOV     A,#0x0
         MOVX    @DPTR,A
         INC     DPTR
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  819           
-//  820           //请求订阅主题
-//  821           mqtt_subscribe_topic(g_mqtt_topics_set, 1);
+//  847           
+//  848           //请求订阅主题
+//  849           mqtt_subscribe_topic(g_mqtt_topics_set, 1);
         ; Setup parameters for call to function mqtt_subscribe_topic
         MOV     R1,#0x1
         MOV     R2,#g_mqtt_topics_set & 0xff
         MOV     R3,#(g_mqtt_topics_set >> 8) & 0xff
         LCALL   ??mqtt_subscribe_topic?relay
-//  822         }
-//  823       }
-//  824     }
-//  825     
-//  826     //数组满，清0
-//  827     if(SampleApp_RxLen>=SAMPLE_APP_RX_MAX)
+//  850         }
+//  851       }
+//  852     }
+//  853     
+//  854     //数组满，清0
+//  855     if(SampleApp_RxLen>=SAMPLE_APP_RX_MAX)
 ??SampleApp_CallBack_3:
         MOV     DPTR,#SampleApp_RxLen
         CLR     C
@@ -5457,8 +6001,8 @@ SampleApp_CallBack:
         SUBB    A,#0x1
         JNC     $+5
         LJMP    ??SampleApp_CallBack_1 & 0xFFFF
-//  828     {
-//  829       SampleApp_RxLen=0;
+//  856     {
+//  857       SampleApp_RxLen=0;
         MOV     DPTR,#SampleApp_RxLen
         MOV     A,#0x0
         MOVX    @DPTR,A
@@ -5466,27 +6010,27 @@ SampleApp_CallBack:
         MOV     A,#0x0
         MOVX    @DPTR,A
         LJMP    ??SampleApp_CallBack_1 & 0xFFFF
-//  830     }
-//  831   }
-//  832   else if(2==onenet_login_ok)
+//  858     }
+//  859   }
+//  860   else if(2==onenet_login_ok)
 ??SampleApp_CallBack_2:
         MOV     DPTR,#onenet_login_ok
         MOVX    A,@DPTR
         XRL     A,#0x2
         JZ      $+5
         LJMP    ??SampleApp_CallBack_1 & 0xFFFF
-//  833   {
-//  834     //如果是注册成功，读服务器的控制命令
-//  835     
-//  836     uint32 curMs=osal_GetSystemClock();
+//  861   {
+//  862     //如果是注册成功，读服务器的控制命令
+//  863     
+//  864     uint32 curMs=osal_GetSystemClock();
         ; Setup parameters for call to function osal_GetSystemClock
         LCALL   ??osal_GetSystemClock?relay
         MOV     ?V0 + 4,R2
         MOV     ?V0 + 5,R3
         MOV     ?V0 + 6,R4
         MOV     ?V0 + 7,R5
-//  837     
-//  838     if((curMs-lastReadMs)<1000) return;
+//  865     
+//  866     if((curMs-lastReadMs)<1000) return;
         MOV     ?V0 + 0,?V0 + 4
         MOV     ?V0 + 1,?V0 + 5
         MOV     ?V0 + 2,?V0 + 6
@@ -5498,19 +6042,19 @@ SampleApp_CallBack:
         MOV     R0,#?V0 + 0
         LCALL   ?UL_GE_X
         JNC     ??SampleApp_CallBack_1
-//  839     
-//  840     lastReadMs=curMs;
+//  867     
+//  868     lastReadMs=curMs;
         MOV     DPTR,#lastReadMs
         MOV     R0,#?V0 + 4
         LCALL   ?L_MOV_TO_X
-//  841     SampleApp_RxLen=0;
+//  869     SampleApp_RxLen=0;
         MOV     DPTR,#SampleApp_RxLen
         MOV     A,#0x0
         MOVX    @DPTR,A
         INC     DPTR
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  842     osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
+//  870     osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
         ; Setup parameters for call to function osal_memset
         MOV     R4,#0x2d
         MOV     R5,#0x1
@@ -5518,7 +6062,7 @@ SampleApp_CallBack:
         MOV     R2,#SampleApp_RxBuf & 0xff
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         LCALL   ??osal_memset?relay
-//  843     SampleApp_RxLen = HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
+//  871     SampleApp_RxLen = HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, SAMPLE_APP_RX_MAX);
         ; Setup parameters for call to function HalUARTRead
         MOV     R4,#0x2c
         MOV     R5,#0x1
@@ -5532,10 +6076,10 @@ SampleApp_CallBack:
         INC     DPTR
         MOV     A,R3
         MOVX    @DPTR,A
-//  844     
-//  845     
-//  846     
-//  847     if(SampleApp_RxLen>0)
+//  872     
+//  873     
+//  874     
+//  875     if(SampleApp_RxLen>0)
         MOV     DPTR,#SampleApp_RxLen
         MOVX    A,@DPTR
         MOV     R0,A
@@ -5545,8 +6089,8 @@ SampleApp_CallBack:
         MOV     A,R0
         ORL     A,R1
         JZ      ??SampleApp_CallBack_1
-//  848     {
-//  849       debug("rx len=%d.\r\n", SampleApp_RxLen);
+//  876     {
+//  877       debug("rx len=%d.\r\n", SampleApp_RxLen);
         ; Setup parameters for call to function debug
         MOV     DPTR,#SampleApp_RxLen
         LCALL   ?PUSH_XSTACK8_X_TWO
@@ -5557,20 +6101,20 @@ SampleApp_CallBack:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 16)
-//  850       
-//  851       OneNet_RevPro(SampleApp_RxBuf);// /sys/a1VZAPhhRWF/zigbee-coor/thing/service/property/set {"method":...}
+//  878       
+//  879       OneNet_RevPro(SampleApp_RxBuf);// /sys/a1VZAPhhRWF/zigbee-coor/thing/service/property/set {"method":...}
         ; Setup parameters for call to function OneNet_RevPro
         MOV     R2,#SampleApp_RxBuf & 0xff
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         LCALL   ??OneNet_RevPro?relay
-//  852       SampleApp_RxLen=0;
+//  880       SampleApp_RxLen=0;
         MOV     DPTR,#SampleApp_RxLen
         MOV     A,#0x0
         MOVX    @DPTR,A
         INC     DPTR
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  853       osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
+//  881       osal_memset(SampleApp_RxBuf, 0, SAMPLE_APP_RX_MAX+1);
         ; Setup parameters for call to function osal_memset
         MOV     R4,#0x2d
         MOV     R5,#0x1
@@ -5578,112 +6122,112 @@ SampleApp_CallBack:
         MOV     R2,#SampleApp_RxBuf & 0xff
         MOV     R3,#(SampleApp_RxBuf >> 8) & 0xff
         LCALL   ??osal_memset?relay
-//  854     }
-//  855   }
-//  856   
-//  857 }
+//  882     }
+//  883   }
+//  884   
+//  885 }
 ??SampleApp_CallBack_1:
         MOV     R7,#0x8
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock8
-//  858 
-//  859 #else
-//  860 
-//  861 /*********************************************************************
-//  862 * @fn      SampleApp_Send_P2P_Message
-//  863 *
-//  864 * @brief   point to point.
-//  865 *
-//  866 * @param   none
-//  867 *
-//  868 * @return  none
-//  869 */
-//  870 void SampleApp_Send_P2P_Message( void )
-//  871 {
-//  872   uint8 str[5]={0};
-//  873   uint8 strTemp[20]={0};
-//  874   int len=0;
-//  875   
-//  876   DHT11();             //获取温湿度
-//  877   
-//  878   str[0] = wendu;//温度
-//  879   str[1] = shidu;//湿度
-//  880   len=2;
-//  881   
-//  882   sprintf(strTemp, "T&H:%d %d", str[0],str[1]);
-//  883   HalLcdWriteString(strTemp, HAL_LCD_LINE_3); //LCD显示
-//  884   
-//  885   HalUARTWrite(0, strTemp, osal_strlen(strTemp));           //串口输出提示信息
-//  886   HalUARTWrite(0, "\r\n",2);
-//  887   
-//  888   //无线发送到协调器
-//  889   if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
-//  890                       SAMPLEAPP_P2P_CLUSTERID,
-//  891                       len,
-//  892                       str,
-//  893                       &SampleApp_MsgID,
-//  894                       AF_DISCV_ROUTE,
-//  895                       AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
-//  896   {
-//  897   }
-//  898   else
-//  899   {
-//  900     // Error occurred in request to send.
-//  901   }
-//  902 }
-//  903 
-//  904 void SampleApp_CallBack(uint8 port, uint8 event)
-//  905 {
-//  906   (void)port;
-//  907   
-//  908   HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, 1);
+//  886 
+//  887 #else
+//  888 
+//  889 /*********************************************************************
+//  890 * @fn      SampleApp_Send_P2P_Message
+//  891 *
+//  892 * @brief   point to point.
+//  893 *
+//  894 * @param   none
+//  895 *
+//  896 * @return  none
+//  897 */
+//  898 void SampleApp_Send_P2P_Message( void )
+//  899 {
+//  900   uint8 str[5]={0};
+//  901   uint8 strTemp[20]={0};
+//  902   int len=0;
+//  903   
+//  904   DHT11();             //获取温湿度
+//  905   
+//  906   str[0] = wendu;//温度
+//  907   str[1] = shidu;//湿度
+//  908   len=2;
 //  909   
-//  910 }
-//  911 
-//  912 
-//  913 #endif
-//  914 
-//  915 
-//  916 //调试信息输出
+//  910   sprintf(strTemp, "T&H:%d %d", str[0],str[1]);
+//  911   HalLcdWriteString(strTemp, HAL_LCD_LINE_3); //LCD显示
+//  912   
+//  913   HalUARTWrite(0, strTemp, osal_strlen(strTemp));           //串口输出提示信息
+//  914   HalUARTWrite(0, "\r\n",2);
+//  915   
+//  916   //无线发送到协调器
+//  917   if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
+//  918                       SAMPLEAPP_P2P_CLUSTERID,
+//  919                       len,
+//  920                       str,
+//  921                       &SampleApp_MsgID,
+//  922                       AF_DISCV_ROUTE,
+//  923                       AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
+//  924   {
+//  925   }
+//  926   else
+//  927   {
+//  928     // Error occurred in request to send.
+//  929   }
+//  930 }
+//  931 
+//  932 void SampleApp_CallBack(uint8 port, uint8 event)
+//  933 {
+//  934   (void)port;
+//  935   
+//  936   HalUARTRead(SAMPLE_APP_PORT, SampleApp_RxBuf, 1);
+//  937   
+//  938 }
+//  939 
+//  940 
+//  941 #endif
+//  942 
+//  943 
+//  944 //调试信息输出
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  917 void debug(uint8 * msg, ...)
+//  945 void debug(uint8 * msg, ...)
 debug:
         CFI Block cfiBlock9 Using cfiCommon0
         CFI Function debug
         CODE
-//  918 {
+//  946 {
         ; Saved register size: 0
         ; Auto size: 0
-//  919 #if 0
-//  920   uint8 len=0;
-//  921   char info[100] = {0};
-//  922   va_list args;
-//  923   
-//  924   if(msg==NULL) return;
-//  925   
-//  926   va_start(args, msg);
-//  927   vsprintf(info, (const char*)msg, args);
-//  928   va_end(args);
-//  929   
-//  930   len=osal_strlen((char *)info);
-//  931   if(len==0) return;
-//  932   
-//  933   
-//  934   HalUARTWrite(0,info, len);//串口0发送
-//  935 #endif
-//  936 }
+//  947 #if 0
+//  948   uint8 len=0;
+//  949   char info[100] = {0};
+//  950   va_list args;
+//  951   
+//  952   if(msg==NULL) return;
+//  953   
+//  954   va_start(args, msg);
+//  955   vsprintf(info, (const char*)msg, args);
+//  956   va_end(args);
+//  957   
+//  958   len=osal_strlen((char *)info);
+//  959   if(len==0) return;
+//  960   
+//  961   
+//  962   HalUARTWrite(0,info, len);//串口0发送
+//  963 #endif
+//  964 }
         LJMP    ?BRET
         CFI EndBlock cfiBlock9
-//  937 
+//  965 
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  938 void SampleApp_getIEEEAddr(uint8* IEEEAddr)//length of IEEEAddr should be Z_EXTADDR_LEN*2
+//  966 void SampleApp_getIEEEAddr(uint8* IEEEAddr)//length of IEEEAddr should be Z_EXTADDR_LEN*2
 SampleApp_getIEEEAddr:
         CFI Block cfiBlock10 Using cfiCommon0
         CFI Function SampleApp_getIEEEAddr
         CODE
-//  939 {
+//  967 {
         MOV     A,#-0xc
         LCALL   ?BANKED_ENTER_XDATA
         CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
@@ -5702,33 +6246,33 @@ SampleApp_getIEEEAddr:
         CFI CFA_XSP16 add(XSP16, 12)
         ; Saved register size: 12
         ; Auto size: 0
-//  940 
-//  941   uint8 i;
-//  942   uint8 *xad;
-//  943   //uint8 lcd_buf[Z_EXTADDR_LEN*2+1];
-//  944   
-//  945   // Display the extended address.
-//  946   xad = aExtendedAddress + Z_EXTADDR_LEN - 1;
+//  968   
+//  969   uint8 i;
+//  970   uint8 *xad;
+//  971   //uint8 lcd_buf[Z_EXTADDR_LEN*2+1];
+//  972   
+//  973   // Display the extended address.
+//  974   xad = aExtendedAddress + Z_EXTADDR_LEN - 1;
         MOV     R0,#(aExtendedAddress + 7) & 0xff
         MOV     R1,#((aExtendedAddress + 7) >> 8) & 0xff
-//  947   
-//  948   for (i = 0; i < Z_EXTADDR_LEN*2; xad--)
+//  975   
+//  976   for (i = 0; i < Z_EXTADDR_LEN*2; xad--)
         MOV     R6,#0x0
 ??SampleApp_getIEEEAddr_0:
         MOV     A,R6
         CLR     C
         SUBB    A,#0x10
         JNC     ??SampleApp_getIEEEAddr_1
-//  949   {
-//  950     uint8 ch;
-//  951     ch = (*xad >> 4) & 0x0F;
+//  977   {
+//  978     uint8 ch;
+//  979     ch = (*xad >> 4) & 0x0F;
         MOV     DPL,R0
         MOV     DPH,R1
         MOVX    A,@DPTR
         SWAP    A
         ANL     A,#0xf
         MOV     R7,A
-//  952     IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
+//  980     IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
         MOV     ?V0 + 2,R6
         MOV     A,#0x1
         ADD     A,?V0 + 2
@@ -5759,13 +6303,13 @@ SampleApp_getIEEEAddr:
         POP     A
         CFI CFA_SP SP+0
         MOVX    @DPTR,A
-//  953     ch = *xad & 0x0F;
+//  981     ch = *xad & 0x0F;
         MOV     DPL,R0
         MOV     DPH,R1
         MOVX    A,@DPTR
         ANL     A,#0xf
         MOV     R7,A
-//  954     IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
+//  982     IEEEAddr[i++] = ch + (( ch < 10 ) ? '0' : '7');
         MOV     ?V0 + 3,R6
         MOV     A,#0x1
         ADD     A,?V0 + 3
@@ -5796,7 +6340,7 @@ SampleApp_getIEEEAddr:
         POP     A
         CFI CFA_SP SP+0
         MOVX    @DPTR,A
-//  955   }
+//  983   }
         MOV     A,R0
         ADD     A,#-0x1
         MOV     R0,A
@@ -5804,7 +6348,7 @@ SampleApp_getIEEEAddr:
         ADDC    A,#-0x1
         MOV     R1,A
         SJMP    ??SampleApp_getIEEEAddr_0
-//  956   IEEEAddr[Z_EXTADDR_LEN*2] = '\0';
+//  984   IEEEAddr[Z_EXTADDR_LEN*2] = '\0';
 ??SampleApp_getIEEEAddr_1:
         MOV     A,R2
         ADD     A,#0x10
@@ -5814,19 +6358,19 @@ SampleApp_getIEEEAddr:
         MOV     DPH,A
         MOV     A,#0x0
         MOVX    @DPTR,A
-//  957 }
+//  985 }
         MOV     R7,#0x4
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock10
-//  958 
+//  986 
 
         RSEG BANKED_CODE:CODE:NOROOT(0)
-//  959 int SampleApp_SendPointToPointMessage(uint16 ReceiveAddr,uint16 DataId,uint8* SendData,uint16 Lens )//ReceiveAddr为接受设备的地址，DataId为数据识别码，4位16进制码，Lens仅写SendData长度即可
+//  987 int SampleApp_SendPointToPointMessage(uint16 ReceiveAddr,uint16 DataId,uint8* SendData,uint16 Lens )//ReceiveAddr为接受设备的地址，DataId为数据识别码，4位16进制码，Lens仅写SendData长度即可
 SampleApp_SendPointToPointMessage:
         CFI Block cfiBlock11 Using cfiCommon0
         CFI Function SampleApp_SendPointToPointMessage
         CODE
-//  960 {
+//  988 {
         FUNCALL SampleApp_SendPointToPointMessage, sprintf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -5914,16 +6458,16 @@ SampleApp_SendPointToPointMessage:
         INC     DPTR
         MOVX    A,@DPTR
         MOV     R7,A
-//  961   //uint8 data[10]={'0','1','2','3','4','5','6','7','8','9'};//定义发送内容
-//  962   //uint8 data[10]="0123456789";//上述方式二选一 
-//  963   SampleApp_P2P_DstAddr.addr.shortAddr = ReceiveAddr;
+//  989   //uint8 data[10]={'0','1','2','3','4','5','6','7','8','9'};//定义发送内容
+//  990   //uint8 data[10]="0123456789";//上述方式二选一 
+//  991   SampleApp_P2P_DstAddr.addr.shortAddr = ReceiveAddr;
         MOV     DPTR,#SampleApp_P2P_DstAddr
         MOV     A,?V0 + 0
         MOVX    @DPTR,A
         INC     DPTR
         MOV     A,?V0 + 1
         MOVX    @DPTR,A
-//  964   uint8 FinalSendData[200]={0};
+//  992   uint8 FinalSendData[200]={0};
         MOV     DPTR,#`?<Constant {0}>_6`
         PUSH    DPL
         CFI CFA_SP SP+-1
@@ -5939,7 +6483,7 @@ SampleApp_SendPointToPointMessage:
         CFI CFA_SP SP+0
         MOV     A,#-0x38
         LCALL   ?MOVE_LONG8_XDATA_XDATA
-//  965   sprintf((char*)FinalSendData,"%4x%4d%s",DataId,Lens+8,(char*)SendData);
+//  993   sprintf((char*)FinalSendData,"%4x%4d%s",DataId,Lens+8,(char*)SendData);
         ; Setup parameters for call to function sprintf
         MOV     R0,#?V0 + 4
         LCALL   ?PUSH_XSTACK_I_TWO
@@ -5966,7 +6510,7 @@ SampleApp_SendPointToPointMessage:
         MOV     A,#0x6
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 216)
-//  966   printf("FinalSendData:%s\n",FinalSendData);
+//  994   printf("FinalSendData:%s\n",FinalSendData);
         ; Setup parameters for call to function printf
         MOV     DPL,?XSP + 0
         MOV     DPH,?XSP + 1
@@ -5981,13 +6525,13 @@ SampleApp_SendPointToPointMessage:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 216)
-//  967   int result = AF_DataRequest(&SampleApp_P2P_DstAddr,&SampleApp_epDesc,
-//  968                     SAMPLEAPP_P2P_CLUSTERID,
-//  969                     Lens+8,
-//  970                     FinalSendData,
-//  971                     &SampleApp_TransID,
-//  972                     AF_DISCV_ROUTE,
-//  973                     AF_DEFAULT_RADIUS);
+//  995   int result = AF_DataRequest(&SampleApp_P2P_DstAddr,&SampleApp_epDesc,
+//  996                               SAMPLEAPP_P2P_CLUSTERID,
+//  997                               Lens+8,
+//  998                               FinalSendData,
+//  999                               &SampleApp_TransID,
+// 1000                               AF_DISCV_ROUTE,
+// 1001                               AF_DEFAULT_RADIUS);
         ; Setup parameters for call to function AF_DataRequest
         MOV     ?V0 + 2,#0x1e
         MOV     R0,#?V0 + 2
@@ -6031,19 +6575,19 @@ SampleApp_SendPointToPointMessage:
         MOV     A,R1
         MOV     ?V0 + 2,A
         MOV     ?V0 + 3,#0x0
-//  974   if(result == afStatus_SUCCESS)
+// 1002   if(result == afStatus_SUCCESS)
         MOV     A,?V0 + 2
         ORL     A,?V0 + 3
         JNZ     ??SampleApp_SendPointToPointMessage_0
-//  975   {
-//  976     return 0;
+// 1003   {
+// 1004     return 0;
         MOV     R2,#0x0
         MOV     R3,#0x0
         SJMP    ??SampleApp_SendPointToPointMessage_1
-//  977   }
-//  978   else
-//  979   {
-//  980     printf("%d",result);
+// 1005   }
+// 1006   else
+// 1007   {
+// 1008     printf("%d",result);
 ??SampleApp_SendPointToPointMessage_0:
         ; Setup parameters for call to function printf
         MOV     R0,#?V0 + 2
@@ -6055,7 +6599,7 @@ SampleApp_SendPointToPointMessage:
         MOV     A,#0x2
         LCALL   ?DEALLOC_XSTACK8
         CFI CFA_XSP16 add(XSP16, 216)
-//  981     return result;
+// 1009     return result;
         MOV     R2,?V0 + 2
         MOV     R3,?V0 + 3
 ??SampleApp_SendPointToPointMessage_1:
@@ -6065,9 +6609,9 @@ SampleApp_SendPointToPointMessage:
         MOV     R7,#0x8
         LJMP    ?BANKED_LEAVE_XDATA
         CFI EndBlock cfiBlock11
-//  982     // Error occurred in request to send.
-//  983   }
-//  984 }
+// 1010     // Error occurred in request to send.
+// 1011   }
+// 1012 }
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for SampleApp_epDesc>`:
@@ -6173,13 +6717,13 @@ SampleApp_SendPointToPointMessage:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant "/a1sIpEvOQhQ/device/u...">`:
-        DB "/a1sIpEvOQhQ/device/user/transfer"
+`?<Constant "/a1xaMw4YerO/device/u...">`:
+        DB "/a1xaMw4YerO/device/user/transfer"
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant "/a1sIpEvOQhQ/device/u...">_1`:
-        DB "/a1sIpEvOQhQ/device/user/receive"
+`?<Constant "/a1xaMw4YerO/device/u...">_1`:
+        DB "/a1xaMw4YerO/device/user/receive"
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
@@ -6232,22 +6776,20 @@ SampleApp_SendPointToPointMessage:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant "{\\"flow\\":201,         ...">`:
+`?<Constant "{\\"flow\\":201,        \\"...">`:
         DB 7BH, 22H, 66H, 6CH, 6FH, 77H, 22H, 3AH
         DB 32H, 30H, 31H, 2CH, 20H, 20H, 20H, 20H
-        DB 20H, 20H, 20H, 20H, 20H, 20H, 22H, 6DH
-        DB 73H, 67H, 22H, 3AH, 7BH, 20H, 20H, 20H
-        DB 20H, 20H, 20H, 20H, 20H, 20H, 20H, 20H
+        DB 20H, 20H, 20H, 20H, 22H, 6DH, 73H, 67H
+        DB 22H, 3AH, 7BH, 20H, 20H, 20H, 20H, 20H
         DB 20H, 20H, 20H, 20H, 20H, 22H, 64H, 65H
         DB 76H, 31H, 22H, 3AH, 25H, 64H, 2CH, 20H
         DB 20H, 20H, 20H, 20H, 20H, 20H, 20H, 20H
+        DB 20H, 20H, 20H, 22H, 64H, 65H, 76H, 32H
+        DB 22H, 3AH, 25H, 64H, 2CH, 20H, 20H, 20H
         DB 20H, 20H, 20H, 20H, 20H, 20H, 20H, 20H
-        DB 20H, 22H, 64H, 65H, 76H, 32H, 22H, 3AH
-        DB 25H, 64H, 2CH, 20H, 20H, 20H, 20H, 20H
-        DB 20H, 20H, 20H, 20H, 20H, 20H, 20H, 20H
-        DB 20H, 20H, 20H, 20H, 20H, 20H, 20H, 22H
-        DB 64H, 65H, 76H, 33H, 22H, 3AH, 25H, 64H
-        DB 2CH, 20H, 20H, 20H, 20H, 7DH, 7DH, 0
+        DB 20H, 20H, 20H, 22H, 64H, 65H, 76H, 33H
+        DB 22H, 3AH, 25H, 64H, 2CH, 20H, 20H, 20H
+        DB 20H, 7DH, 7DH, 0
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
@@ -6261,8 +6803,8 @@ SampleApp_SendPointToPointMessage:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant "device%d %d">`:
-        DB "device%d %d"
+`?<Constant "device%d %d\\n">`:
+        DB "device%d %d\012"
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
@@ -6385,6 +6927,21 @@ SampleApp_SendPointToPointMessage:
         DATA8
 `?<Constant "switch2,0">`:
         DB "switch2,0"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "switch1,ck">`:
+        DB "switch1,ck"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "%s%d">`:
+        DB "%s%d"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "switch2,ck">`:
+        DB "switch2,ck"
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
@@ -6542,18 +7099,18 @@ __Constant_3e8:
 
         END
 // 
-// 4 425 bytes in segment BANKED_CODE
+// 5 016 bytes in segment BANKED_CODE
 //    72 bytes in segment BANK_RELAYS
 //     2 bytes in segment SFR_AN
 //    84 bytes in segment XDATA_I
 //    84 bytes in segment XDATA_ID
-// 1 595 bytes in segment XDATA_ROM_C
+// 1 603 bytes in segment XDATA_ROM_C
 //   950 bytes in segment XDATA_Z
 // 
-// 4 581 bytes of CODE  memory
-// 1 591 bytes of CONST memory (+ 4 bytes shared)
+// 5 172 bytes of CODE  memory
+// 1 599 bytes of CONST memory (+ 4 bytes shared)
 //     0 bytes of DATA  memory (+ 2 bytes shared)
 // 1 034 bytes of XDATA memory
 //
 //Errors: none
-//Warnings: 51
+//Warnings: 63
