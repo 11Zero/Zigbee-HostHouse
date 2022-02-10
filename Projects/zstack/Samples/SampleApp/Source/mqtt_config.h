@@ -21,5 +21,10 @@
 
 #define mqttPassword "91bf398bee0b02f1592d908f5d7640a66345645e763eaf009c44baac369e8dd4"
 
+//初始化发布的主题
+#define TOPICS_POST "/a1xaMw4YerO/device/user/transfer"
+
+//初始化订阅的主题
+#define TOPICS_BUFF "/a1xaMw4YerO/device/user/receive"
 
 #endif

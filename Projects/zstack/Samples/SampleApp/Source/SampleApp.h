@@ -79,6 +79,7 @@ extern "C"
 #define SAMPLEAPP_ENDDEV_HEART_BEAT_EVT       0x0008 //终端向协调器发送心跳数据事件
 #define SAMPLEAPP_COOR_CHECK_DEV_EVT          0x0010 //协调器定时检查设备在线状态事件
 #define SAMPLEAPP_COOR_CHECK_MQTT_EVT          0x0020 //协调器定时检查设备在线状态事件
+#define SAMPLEAPP_COOR_SEND_MQTT_EVT          0x0040 //协调器主动发送mqtt消息事件
 /*********************************************************************
  * MACROS
  */

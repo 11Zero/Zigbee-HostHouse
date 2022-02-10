@@ -135,7 +135,7 @@ uint8 MacAddr[8]={0};
 uint8 SampleApp_TransID;  // This is the unique message ID (counter)
 void SampleApp_getIEEEAddr(uint8* IEEEAddr);//length of IEEEAddr should be Z_EXTADDR_LEN*2
 int SampleApp_SendPointToPointMessage(uint16 ReceiveAddr,uint16 DataId,uint8* SendData,uint16 Lens );//ReceiveAddr为接受设备的地址，DataId为数据识别码，4位16进制码，Lens仅写SendData长度即可
-void Response2mqtt(uint8* returnMsg);//向服务器发送反馈消息，反馈主题为thing.service.switch:CmdResult中的Result参数
+void Response2mqtt(uint8* returnMsg,uint8* flow);//向服务器发送消息
 //增加变量END
 static uint8 SampleApp_RxBuf[SAMPLE_APP_RX_MAX+1]={0};
 static uint16 SampleApp_RxLen=0;
@@ -194,9 +194,14 @@ void SampleApp_Init( uint8 task_id )
   
   //初始化发布的主题
   //  sprintf(topics_post, "/sys/%s/%s/thing/service/switch:GetSwitchStatus",ProductKey,DeviceName);
-  sprintf(topics_post, "/a1xaMw4YerO/device/user/transfer");
+//  sprintf(topics_post, "/a1xaMw4YerO/device/user/transfer");
   //初始化订阅的主题
-  sprintf(topics_buff, "/a1xaMw4YerO/device/user/receive");
+//  sprintf(topics_buff, "/a1xaMw4YerO/device/user/receive");
+  
+    sprintf(topics_post, TOPICS_POST);
+  //初始化订阅的主题
+  sprintf(topics_buff, TOPICS_BUFF);
+  
   g_mqtt_topics_set[0]=topics_buff;
 #else
   
@@ -256,14 +261,14 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
       //发送温湿度数据到onenet
       //    OneNet_SendData(end_temp, end_hum);
       
-      sprintf(mqtt_message,
-              "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
-                \"code\":2,\
-    },\"version\":\"1.0.0\"}"
-      );
+//      sprintf(mqtt_message,
+//              "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
+//                \"code\":2,\
+//    },\"version\":\"1.0.0\"}"
+//      );
       //HalLcdWriteString("111", HAL_LCD_LINE_1); //LCD显示
       //发布主题
-      mqtt_publish_topic(topics_post, mqtt_message);
+//      mqtt_publish_topic(topics_post, mqtt_message);
       
       //  OneNet_publish_topic();
     }
@@ -402,7 +407,9 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
       
       P1_1=0;//点亮D2
       
-      
+      sprintf(mqtt_message, "Coord Linked");
+      osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
+      //Response2mqtt("Coord Linked","201");//通知服务器，协调器已连接
       // 启动心跳定时器，15秒一次
       osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_ONENET_HEART_BEAT_EVT,15000 );
       
@@ -437,6 +444,7 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
     {
       //发送心跳
       onenet_mqtt_send_heart();
+
     }
     
     // 启动心跳定时器，15秒一次
@@ -456,16 +464,16 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
       //发送温湿度数据到onenet
       //    OneNet_SendData(end_temp, end_hum);
       
-      sprintf(mqtt_message,"{\"flow\":201,\
-        \"msg\":{\
-          \"dev1\":%d,\
-            \"dev2\":%d,\
-              \"dev3\":%d,\
-    }}",
-    devicesOnlineStatus[0],
-    devicesOnlineStatus[1],
-    devicesOnlineStatus[2]
-      );      //该位置数据包应更改为终端数据汇总，汇总后综合发送至mqtt。
+//      sprintf(mqtt_message,"{\"flow\":201,\
+//        \"msg\":{\
+//          \"dev1\":%d,\
+//            \"dev2\":%d,\
+//              \"dev3\":%d,\
+//    }}",
+//    devicesOnlineStatus[0],
+//    devicesOnlineStatus[1],
+//    devicesOnlineStatus[2]
+//      );      //该位置数据包应更改为终端数据汇总，汇总后综合发送至mqtt。
       
       //发布主题
       //mqtt_publish_topic(topics_post, mqtt_message);
@@ -488,7 +496,7 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
     {
       devicesOnlineStatus[i] = devicesOnline[i];
       devicesOnline[i]=0;
-      printf("device%d %d\n",i,devicesOnlineStatus[i]);
+      //printf("device%d %d\n",i,devicesOnlineStatus[i]);
       //HalLcdWriteString(buff, i+1);
     }
     
@@ -512,27 +520,55 @@ UINT16 SampleApp_ProcessEvent( uint8 task_id, UINT16 events )
         memcpy(pureRecMsg,strstr(MqttRecMsg,"\"msg\":\"")+7,strstr(MqttRecMsg,"\",\"flow\"")-(strstr(MqttRecMsg,"\"msg\":\"")+7));
       }
     }
-    if(DevicesShortAddr[0]!=-1 && strstr(pureRecMsg,"dev0,")!=NULL)
+    if(strcmp(pureRecMsg,"0")==0)//协调器收到android心跳包,纯消息体为0，收到即反馈空消息至android
     {
-      SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-      printf("dev0,");
+      sprintf(mqtt_message, "%s",pureRecMsg);
+      osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
+      //Response2mqtt(pureRecMsg,"201");
+    }else if(DevicesShortAddr[0]!=-1 && strstr(pureRecMsg,"dev0,")!=NULL)
+    {
+      SampleApp_SendPointToPointMessage(DevicesShortAddr[0],0x1004,pureRecMsg,strlen(pureRecMsg));
+      //printf("dev0,");
     }else if(DevicesShortAddr[1]!=-1 && strstr(pureRecMsg,"dev1,")!=NULL)
     {
-      SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-      printf("dev1,");
+      SampleApp_SendPointToPointMessage(DevicesShortAddr[1],0x1004,pureRecMsg,strlen(pureRecMsg));
+      //printf("dev1,");
     }else if(DevicesShortAddr[2]!=-1 && strstr(pureRecMsg,"dev2,")!=NULL)
     {
-      SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-      printf("dev2,");
+      SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,pureRecMsg,strlen(pureRecMsg));
+      //printf("dev2,");
     }else if(DevicesShortAddr[3]!=-1 && strstr(pureRecMsg,"dev3,")!=NULL)
     {
-      SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg)+1);
-      printf("dev3,");
+      SampleApp_SendPointToPointMessage(DevicesShortAddr[3],0x1004,pureRecMsg,strlen(pureRecMsg));
+      //printf("dev3,");
+    }else if(NULL!=strstr(pureRecMsg,"devstatus,ck"))
+    {
+      sprintf(pureRecMsg, "devstatus,");
+      for(int i=0;i<sizeof(devicesOnlineStatus)/sizeof(devicesOnlineStatus[0]);i++)
+      {
+        sprintf(pureRecMsg, "%s%d",pureRecMsg,devicesOnlineStatus[i]);
+        if(devicesOnlineStatus[i])
+        {
+          SampleApp_SendPointToPointMessage(DevicesShortAddr[i],0x1004,"status,ck",strlen("status,ck"));
+        }
+      }
+      sprintf(mqtt_message, "%s",pureRecMsg);
+      osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
+      //Response2mqtt(pureRecMsg,"201");
+                
     }
     osal_memset(MqttRecMsg, 0, 200);
     
     return (events ^ SAMPLEAPP_COOR_CHECK_MQTT_EVT);
   }  
+  
+    if ( events & SAMPLEAPP_COOR_SEND_MQTT_EVT )//协调器主动发送mqtt事件
+    {
+      Response2mqtt(mqtt_message,"201");
+      osal_memset(mqtt_message, 0, 200);
+      return (events ^ SAMPLEAPP_COOR_SEND_MQTT_EVT);
+    }
+  
 #else
   
   //定时器时间到
@@ -611,25 +647,25 @@ void SampleApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
       {
       case 1003://终端向协调器发送IEEE事件，此处自动填写shortAddr映射表DevicesShortAddr，DevicesIEEEAddr
         {
+#ifdef ZDO_COORDINATOR
           for(int i=0;i<sizeof(DevicesIEEEAddr)/sizeof(DevicesIEEEAddr[0]);i++)
           {
             if(strncmp((char*)data,(char*)DevicesIEEEAddr[i],16)==0)
             {
               DevicesShortAddr[i]=pkt->srcAddr.addr.shortAddr;
-              sprintf((char*)data,"device %d linked",i);
-              //HalLcdWriteString((char*)tmpData,i+1);
-              //SampleApp_getIEEEAddr(data);
-              //              SampleApp_SendPointToPointMessage(DevicesShortAddr[i],0x1004,tmpData,16);
-#ifdef ZDO_COORDINATOR
+              //sprintf((char*)data,"device %d linked",i);
+
               if(onenet_login_ok==2)
               {
-                sprintf(mqtt_message, "{\"flow\":201,\"msg\":\"%s Linked\"}",DevicesIEEEAddr[i]);
-                OneNet_publish_topic(topics_post, mqtt_message);
+                sprintf(mqtt_message, "dev%d Linked",i);
+                osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
+                //Response2mqtt(mqtt_message,"201");
               }
-#endif
+
               break;
             }
           }
+#endif
         }break;
       case 1001://心跳包数据事件
         {
@@ -652,47 +688,68 @@ void SampleApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
           if(NULL!=strstr(data,"switch1,1"))//判断消息设置开关switch1命令为开
           {
             P0_5 = 1;
+            sprintf(data,"%s,%d","switch1",P0_5);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           else if(NULL!=strstr(data,"switch1,0"))//判断消息设置开关switch1命令为关
           {
             P0_5 = 0;
+            sprintf(data,"%s,%d","switch1",P0_5);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
           }
           else if(NULL!=strstr(data,"switch2,1"))//判断消息设置开关switch2命令为关开
           {
             P0_7 = 1;
+            sprintf(data,"%s,%d","switch2",P0_7);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           else if(NULL!=strstr(data,"switch2,0"))//判断消息设置开关switch2命令为关
           {
             P0_7 = 0;
+            sprintf(data,"%s,%d","switch2",P0_7);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           
           else if(NULL!=strstr(data,"switch1,ck"))//判断消息查询开关switch1命令
           {
-            data[strlen(data)-2]='\0';
-            sprintf(data,"%s%d",data,P0_5);
+            sprintf(data,"%s,%d","switch1",P0_5);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
           else if(NULL!=strstr(data,"switch2,ck"))//判断消息查询开关switch2命令
           {
-            data[strlen(data)-2]='\0';
-            sprintf(data,"%s%d",data,P0_7);
+            sprintf(data,"%s,%d","switch2",P0_7);
             SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));            
+          }else if(NULL!=strstr(data,"status,ck"))//协调器发消息查询所有开关状态
+          {
+            sprintf(data,"%s,%d,%s,%d","switch1",P0_5,"switch2",P0_7);
+            SampleApp_SendPointToPointMessage(0x0000,0x1005,data,strlen(data));
           }
         }break;
       case 1005://协调器收到终端向反馈的查询结果  data = "dev2,switch1,0",立即发送给服务器
         {
           //todo
           //查询结果消息为{"msg":"dev2,switch1,0","flow":201}
-          #ifdef ZDO_COORDINATOR
-          if(onenet_login_ok==2)
+//          #ifdef ZDO_COORDINATOR
+//          if(onenet_login_ok==2)
+//          {
+//            Response2mqtt(data,"201");
+//          }
+//          #endif
+#ifdef ZDO_COORDINATOR
+          for(int i=0;i<sizeof(DevicesShortAddr)/sizeof(DevicesShortAddr[0]);i++)
           {
-            Response2mqtt(data);
+            if(pkt->srcAddr.addr.shortAddr==DevicesShortAddr[i])
+            {
+              if(onenet_login_ok==2)
+              {
+                sprintf(mqtt_message, "dev%d,%s",i,data);
+                //Response2mqtt(mqtt_message,"201");
+                osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
+              }
+              break;
+            }
           }
-          #endif
+#endif
         }break;
       }
 #ifdef ZDO_COORDINATOR
@@ -701,11 +758,11 @@ void SampleApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
         //发送温湿度数据到onenet
         //    OneNet_SendData(end_temp, end_hum);
         
-        sprintf(mqtt_message, 
-                "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
-                  \"code\":\"%s\"\
-      },\"version\":\"1.0.0\"}",
-      data);
+//        sprintf(mqtt_message, 
+//                "{\"method\":\"thing.service.property.set\",\"id\":\"630262306\",\"params\":{\
+//                  \"code\":\"%s\"\
+//      },\"version\":\"1.0.0\"}",
+//      data);
       //mqtt_publish_topic(topics_post, mqtt_message);
       
       //  OneNet_publish_topic();
@@ -773,7 +830,9 @@ void mqtt_rx(uint8* topic, uint8* cmd)
     }
     else{
       //osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_CHECK_MQTT_EVT,5 );
-      Response2mqtt("too many msg, hold on");
+      //Response2mqtt("too many msg, hold on","201");
+      sprintf(mqtt_message, "too many msg, hold on");
+      osal_start_timerEx( SampleApp_TaskID, SAMPLEAPP_COOR_SEND_MQTT_EVT,1 );
       HalLcdWriteString("too many msg", HAL_LCD_LINE_4);
     }
   }
@@ -785,12 +844,14 @@ void mqtt_rx(uint8* topic, uint8* cmd)
 }
 
 
-void Response2mqtt(uint8* returnMsg)
+void Response2mqtt(uint8* returnMsg,uint8* flow)
 {
-  sprintf(mqtt_message,"{\"msg\":\"%s\",\"flow\":201}",returnMsg);  
-  
+  uint8 message[200] = {0};
+  sprintf(message,"{\"msg\":\"%s\",\"flow\":%s}",returnMsg,flow); 
+        printf(message);
+      printf("\n");
   //发布主题
-  mqtt_publish_topic(topics_post, mqtt_message);
+  mqtt_publish_topic(topics_post,message );
   
 }
 
