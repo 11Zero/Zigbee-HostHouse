@@ -205,8 +205,12 @@ void SampleApp_Init( uint8 task_id )
   g_mqtt_topics_set[0]=topics_buff;
 #else
   
-  P0SEL &= ~0xa0;                 //设置P05和P07为普通IO口
-  P0DIR |= 0xa0;                 //P05和P07定义为输出口
+  //P0SEL &= ~0x20;                 //设置P05为普通IO口
+  //P0DIR &= ~0x20;                 //P05定义为输入口
+  
+  P0SEL &= ~0xa0;                 //设置P07为普通IO口
+  P0DIR |= 0xa0;                 //P07定义为输出口
+
 #endif
   
   SampleApp_P2P_DstAddr.addrMode = (afAddrMode_t)Addr16Bit; //点播
@@ -241,7 +245,7 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
   
   if ( keys & HAL_KEY_SW_6 )//key1
   {
-    SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1002,"1002 msg",16);
+    //SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1002,"1002 msg",16);
     //    const signed char *g_mqtt_topics[] = {"mqtt_topic_test1"};
     //    if(0 == mqtt_subscribe_topic(g_mqtt_topics, 1))
     //    {
@@ -251,7 +255,7 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
   
   if ( keys & HAL_KEY_SW_1 )//key2
   {
-    SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,"1004 msg",70);
+    //SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,"1004 msg",70);
     //    if(0==SampleApp_SendPointToPointMessage(DevicesShortAddr[2],0x1004,MqttRecMsg,strlen(MqttRecMsg)))
     //    {
     //      memset(MqttRecMsg,0,sizeof(MqttRecMsg));
@@ -279,16 +283,18 @@ void SampleApp_HandleKeys( uint8 shift, uint8 keys )
   {
     
     
-    SampleApp_SendPointToPointMessage(0x0000,0x1001,"1001 msg",16);
-    //P0_5 = 1;
+    //SampleApp_SendPointToPointMessage(0x0000,0x1001,"1001 msg",16);
+    P0_7 = 1;
+    printf("P0_7 = 1\n");
     //HalLcdWriteString("P0_5 = 1", HAL_LCD_LINE_3);
   }
   
   if ( keys & HAL_KEY_SW_1 )//key2
   {
     
-    SampleApp_SendPointToPointMessage(0x0000,0x1002,"1002 msg",16);
-    //P0_5 = 0;
+    //SampleApp_SendPointToPointMessage(0x0000,0x1002,"1002 msg",16);
+    P0_7 = 0;
+    printf("P0_7 = 0\n");
     //HalLcdWriteString("P0_5 = 0", HAL_LCD_LINE_3);
   }
   
